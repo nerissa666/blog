@@ -8,7 +8,12 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "ant-design-vue": "^4.0.0-rc.6",
+    "axios": "^1.8.3",
     "core-js": "^3.8.3",
+    "normalize.css": "^8.0.1",
+    "reset-css": "^5.0.2",
+    "umi-request": "^1.4.0",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0"

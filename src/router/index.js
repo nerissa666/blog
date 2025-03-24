@@ -4,16 +4,54 @@ import HomeView from '../views/HomeView.vue'
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: HomeView
+  },
+
+  
+  {
+    path: '/message',
+    name: 'Message',
+    component: () => import(/* webpackChunkName: "about" */ '../views/MessageView.vue')
+  },
+  {
+    path: '/link',
+    name: 'Link',
+    component: () => import(/* webpackChunkName: "about" */ '../views/LinkView.vue')
   },
   {
     path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
+    name: 'About',
+
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  },
+  {
+    path: '/user',
+    name: 'User',
+
+    component: () => import(/* webpackChunkName: "about" */ '../views/UserView.vue')
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+
+    component: () => import(/* webpackChunkName: "about" */ '../views/AdminView.vue')
+  },
+  {
+    path: '/:catchAll(.*)',
+    name: 'NotFound',
+    component: () => import(/* webpackChunkName: "about" */ '../views/NotFoundView.vue')
+  },
+  {
+    path: '/article',
+    name: 'Article',
+    component: () => import(/* webpackChunkName: "about" */ '../views/ArticleView.vue')
+  },
+  {
+    path: '/article/:id',
+    name: 'ArticleId',
+    children: [],
+    component: () => import(/* webpackChunkName: "about" */ '../views/ArticleIdView.vue')
   }
 ]
 
