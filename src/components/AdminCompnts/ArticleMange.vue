@@ -28,6 +28,7 @@
             <template v-if="editableData[record.articleID]">
               <a-tag
                 v-for="tag in record.tags"
+                :key="tag"
                 :closable="Boolean(editableData[record.articleID])"
                 @close="
                   () => closeTag(editableData[record.articleID].tags, tag)

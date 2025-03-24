@@ -17,8 +17,8 @@
         <a-upload-dragger
           v-model:fileList="fileList"
           name="file"
-          :multiple="true"
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          :multiple="false"
+          :action="baseURL + '/adminServer/article/md'"
           @change="handleChange"
           @drop="handleDrop"
         >
@@ -54,7 +54,9 @@
 <script setup>
 import { ref, reactive } from "vue";
 import { PlusOutlined } from "@ant-design/icons-vue";
-
+import { useStore } from 'vuex';
+const store = useStore();
+const baseURL = store.state.baseURL;
 const labelCol = { style: { width: "120px" } };
 const wrapperCol = { span: 14 };
 
@@ -65,6 +67,8 @@ import { InboxOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 const fileList = ref([]);
 const handleChange = (info) => {
+  console.log(fileList, 'fileList');
+
   const status = info.file.status;
   if (status !== 'uploading') {
     console.log(info.file, info.fileList);

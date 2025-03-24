@@ -81,7 +81,7 @@ const baseInfo = reactive([
   },
   {
     head: "ADDRESS",
-    content: "西安雁塔区",
+    content: "西安",
   },
   {
     head: "EMAIL",
@@ -89,8 +89,8 @@ const baseInfo = reactive([
   },
   {
     head: "GITHUB",
-    content: "https://github.com/Nerissa-321",
-  },
+    content: "https://github.com/nerissa666/Blog",
+  }
 ]);
 </script>
 <style scoped lang="scss">
