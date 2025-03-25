@@ -6,18 +6,18 @@ export default createStore({
     infoLogin: null,
   },
   getters: {
-    getInfoLogin: state => state.infoLogin,
     baseURL: state => state.baseURL,
     infoLogin: state => state.infoLogin,
   },
   mutations: {
     setInfoLogin(state, infoLogin) {
-      state.infoLogin = infoLogin;
+      Object.keys(infoLogin).forEach(key => {
+        state.infoLogin[key] = infoLogin[key];
+      });
     },
   },
   actions: {
     setInfoLogin(context, infoLogin) {
-      
       context.commit('setInfoLogin', infoLogin);
     },
   },

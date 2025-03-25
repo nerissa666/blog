@@ -68,7 +68,7 @@
             list-type="picture-card"
             class="avatar-uploader"
             :show-upload-list="false"
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            :action="baseURL + '/personal/photo'"
             :before-upload="beforeUpload"
             @change="handleChange"
           >
@@ -82,9 +82,7 @@
         </a-form-item>
 
         <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 10 }">
-          <a-button type="primary" html-type="submit" @click.prevent="onSubmit"
-            >Submit</a-button
-          >
+          <a-button type="primary" html-type="submit">Submit</a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -94,14 +92,17 @@
 <script setup>
 import { reactive, ref, toRaw } from "vue";
 import { Form, UploadChangeParam, UploadProps, message } from "ant-design-vue";
-import { PlusOutlined, LoadingOutlined } from "@ant-design/icons-vue";
-
+import { useStore } from "vuex";
+import axios from "axios";
+const store = useStore();
 const useForm = Form.useForm;
-const user = ref("xgx");
 const layout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 14 },
 };
+const loginInfo = JSON.parse(localStorage.getItem("loginInfo"));
+const user = ref(loginInfo?.user);
+const baseURL = ref(store.state.baseURL);
 const validateMessages = {
   required: "${label} is required!",
   // types: {
@@ -174,19 +175,32 @@ const formState = reactive({
   repeatNewPassWord: "",
 });
 const { validate, validateInfos } = useForm(formState, validater);
-const onSubmit = () => {
+
+const onFinish = () => {
   validate()
-    .then(() => {
-      console.log(toRaw(formState));
-    })
-    .catch((err) => {
-      console.log("error", err);
-    });
-};
-const onFinish = (values) => {
-  validate()
-    .then(() => {
-      console.log(toRaw(modelRef));
+    .then((values) => {
+      console.log(values, "values");
+      Promise.any([
+        axios
+          .post("/personal/user", {
+            user: values.newName,
+          })
+          .then(({ data }) => {
+            message.success(data.msg);
+          }),
+        axios
+          .post("/personal/pass", {
+            oldPass: values.passWord,
+            pass: values.newPassWord,
+          })
+          .then(({ data }) => {
+            message.success(data.msg);
+          }),
+      ]).then(() => {
+        store.commit("setInfoLogin", null);
+        console.log(store.state.infoLogin, 'store.state.infoLogin');
+        localStorage.removeItem("loginInfo");
+      });
     })
     .catch((err) => {
       console.log("error", err);

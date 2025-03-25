@@ -5,7 +5,7 @@
       你好！欢迎来到我的博客！我是一名有点傲娇的WEB前端攻城狮，热衷于研究JavaScript、NodeJs、Vue、React、WebGL、Flutter、Electron……这是我的主页！我会在这里发表一些不成熟的技术文章，记录一些沙雕的日常。博客目前使用的是Vue
       + Nuxt + AntDesignVue + Node + Express +
       MongoDB搭建的，如果对源码感兴趣的话可以
-      <a href="https://github.com/nerissa666/Blog" target="_blank">点击这里</a> 。欢迎提出宝贵的建议哦！
+      <a href="https://github.com/nerissa666" target="_blank">点击这里</a> 。欢迎提出宝贵的建议哦！
     </article>
     <div class="information">
       <div class="base_info">
@@ -77,7 +77,7 @@ import { reactive } from "vue";
 const baseInfo = reactive([
   {
     head: "NICKNAME",
-    content: "桂霞",
+    content: "小红帽",
   },
   {
     head: "ADDRESS",
@@ -89,7 +89,7 @@ const baseInfo = reactive([
   },
   {
     head: "GITHUB",
-    content: "https://github.com/nerissa666/Blog",
+    content: "https://github.com/nerissa666",
   }
 ]);
 </script>

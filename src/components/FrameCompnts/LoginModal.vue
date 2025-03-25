@@ -136,7 +136,7 @@ const LoginFinish = (values) => {
         message.success(data.msg);
         visible.value = false;
         localStorage.setItem('loginInfo', JSON.stringify(data.data));
-        store.commit('setInfoLogin', data.data); // 直接使用store.commit调用mutation
+        store.commit('setInfoLogin', data.data);
         emit("update:modal2Visible", visible.value);
         emit("update:isLogin", data.data);
       } else {

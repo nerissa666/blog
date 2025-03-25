@@ -27,16 +27,16 @@
           >退出登录</a-button
         >
       </template>
-      <template #title> </template>
+      <template #title>{{ loginInfo?.user }}</template>
       <a-button
-        v-if="!loginInfo"
+        v-if="!loginInfo?.user"
         type="primary"
         size="small"
         @click="modal2Visible = true"
         >登录/注册</a-button
       ><a-avatar
         v-else
-        :src="loginInfo.photo"
+        :src="loginInfo?.photo"
         :size="{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }"
         @click="modal2Visible = true"
         style="cursor: pointer"
@@ -65,13 +65,14 @@ const updateMsg = () => {
   router.push("/user");
 };
 const modal2Visible = ref(false);
-const updateModal2Visible = (newVal, isLogin) => {
+const updateModal2Visible = (newVal) => {
   modal2Visible.value = newVal;
 };
 const updateIsLogin = (newVal) => {
-  Object.assign(loginInfo, newVal);
-  console.log(newVal, "newVal");
-  console.log(!loginInfo, "!loginInfo");
+  // Object.assign(loginInfo, newVal);
+  Object.keys(newVal).forEach(key => {
+    loginInfo[key] = newVal[key];
+  });
 };
 const onChange = (key) => {
   switch (key) {
@@ -84,10 +85,16 @@ const onChange = (key) => {
   }
 };
 const logout = () => {
+  console.log(loginInfo, "退出登录触发了，，");
   localStorage.removeItem("loginInfo");
   store.commit("setInfoLogin", null);
-  loginInfo.value = null;
-  console.log(loginInfo, "loginInfo111");
+  // 使用ref来创建响应式对象
+  const loginInfoRef = ref(loginInfo);
+  loginInfoRef.value = null;
+  // 或者使用reactive
+  // Object.keys(loginInfo).forEach(key => {
+  //   delete loginInfo[key];
+  // });
 };
 </script>
 <style scoped lang="scss">

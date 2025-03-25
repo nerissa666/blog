@@ -143,7 +143,7 @@ const rootComment = reactive([
   //   date: "YYYY-MM-DD HH:mm:ss",
   //   content:
   //     "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).",
-  //   likeList: ["Han Solo", "xgx", "颉桂霞"],
+  //   likeList: ["Han Solo", "xgx", "小红帽"],
   //   childrens: [
   //     {
   //       commentId: "2",
@@ -152,7 +152,7 @@ const rootComment = reactive([
   //       avatar: "https://joeschmoe.io/api/v1/random",
   //       content:
   //         "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).",
-  //       likeList: ["Han Solo", "xgx", "颉桂霞"],
+  //       likeList: ["Han Solo", "xgx", "小红帽"],
   //       childrens: [
   //         {
   //           commentId: "5",
@@ -161,7 +161,7 @@ const rootComment = reactive([
   //           date: "YYYY-MM-DD HH:mm:ss",
   //           content:
   //             "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).",
-  //           likeList: ["Han Solo", "xgx", "颉桂霞"],
+  //           likeList: ["Han Solo", "xgx", "小红帽"],
   //         },
   //         {
   //           commentId: "6",
@@ -171,7 +171,7 @@ const rootComment = reactive([
   //           avatar: "https://joeschmoe.io/api/v1/random",
   //           content:
   //             "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).",
-  //           likeList: ["Han Solo", "xgx", "颉桂霞"],
+  //           likeList: ["Han Solo", "xgx", "小红帽"],
   //         },
   //       ],
   //     },
@@ -183,7 +183,7 @@ const rootComment = reactive([
   //       avatar: "https://joeschmoe.io/api/v1/random",
   //       content:
   //         "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).",
-  //       likeList: ["xgx", "颉桂霞"],
+  //       likeList: ["xgx", "小红帽"],
   //     },
   //     {
   //       commentId: "4",
@@ -203,7 +203,7 @@ const rootComment = reactive([
   //   date: "YYYY-MM-DD HH:mm:ss",
   //   content:
   //     "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure).",
-  //   likeList: ["Han Solo", "xgx", "颉桂霞"],
+  //   likeList: ["Han Solo", "xgx", "小红帽"],
   // }
 ]);
 const getComment = () => {

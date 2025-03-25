@@ -5,7 +5,7 @@
       <article>
         Beauty这个形容词，大概就是为我而创造的吧😏<br />
 
-        谢谢你这么好看还这么关注我鸭！我叫桂霞，你可以亲切的叫我桂霞！或者…<br />
+        谢谢你这么好看还这么关注我鸭！我叫小红帽，你可以亲切的叫我小红帽！或者…<br />
 
         有必要强调一下！我还没有秃头！大概是写的代码还不够多...
       </article>
@@ -27,7 +27,7 @@
     <div>
       <h2>ABOUT COPYRIGHT</h2>
       <article>
-        源码开源：<a href="https://github.com/nerissa666" target="_blank">桂霞的github</a
+        源码开源：<a href="https://github.com/nerissa666" target="_blank">小红帽的github</a
         ><br />
 
         在注明出处的前提下，本站文章允许非商业用途的转载。
