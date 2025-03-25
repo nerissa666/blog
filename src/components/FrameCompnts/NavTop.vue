@@ -51,14 +51,24 @@
 </template>
 <script setup>
 import { reactive, ref, watch } from "vue";
+import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
 import LoginModal from "./LoginModal.vue";
 import { useStore, mapState, mapGetters } from "vuex";
 const store = useStore();
 const isAdmin = ref(true);
-const tempInfo = JSON.parse(localStorage.getItem("loginInfo"));
-const loginInfo = reactive(tempInfo);
-
+const tempInfo = JSON.parse(localStorage.getItem("loginInfo")) || {};
+console.log(tempInfo, "tempInfo");
+store.commit("setInfoLogin", tempInfo);
+const loginInfo = reactive(store.state.infoLogin);
+watch(
+  () => store.state.infoLogin,
+  (newVal) => {
+    console.log(newVal, "watch");
+    Object.assign(loginInfo, newVal);
+  },
+  { deep: true }
+);
 const activeKey = ref("home");
 const router = useRouter();
 const updateMsg = () => {
@@ -69,10 +79,11 @@ const updateModal2Visible = (newVal) => {
   modal2Visible.value = newVal;
 };
 const updateIsLogin = (newVal) => {
+  // console.log(newVal, "newValupdateIsLogin");
   // Object.assign(loginInfo, newVal);
-  Object.keys(newVal).forEach(key => {
-    loginInfo[key] = newVal[key];
-  });
+  // Object.keys(newVal).forEach((key) => {
+  //   loginInfo[key] = newVal[key];
+  // });
 };
 const onChange = (key) => {
   switch (key) {
@@ -87,15 +98,14 @@ const onChange = (key) => {
 const logout = () => {
   console.log(loginInfo, "退出登录触发了，，");
   localStorage.removeItem("loginInfo");
-  store.commit("setInfoLogin", null);
+  store.commit("setInfoLogin", {});
   // 使用ref来创建响应式对象
-  const loginInfoRef = ref(loginInfo);
-  loginInfoRef.value = null;
-  // 或者使用reactive
-  // Object.keys(loginInfo).forEach(key => {
-  //   delete loginInfo[key];
-  // });
+  // // 或者使用reactive
+  Object.keys(loginInfo).forEach((key) => {
+    delete loginInfo[key];
+  });
 };
+
 </script>
 <style scoped lang="scss">
 .nav_top {

@@ -59,20 +59,30 @@
         v-bind="layout"
         name="nest-messages-avatar"
         :validate-messages="validateMessages"
-        @finish="onFinish"
       >
         <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 6 }">
           <a-upload
-            v-model:file-list="fileList"
-            name="avatar"
+            name="file"
             list-type="picture-card"
             class="avatar-uploader"
-            :show-upload-list="false"
-            :action="baseURL + '/personal/photo'"
+            :show-upload-list="true"
+            :action="`${baseURL}/personal/photo`"
             :before-upload="beforeUpload"
-            @change="handleChange"
+            :on-change="handleChange"
+            :on-success="handleSuccess"
+            :auto-upload="true"
+            :with-credentials="true"
+            :max-count="1"
+            :file-list="fileList"
           >
-            <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+            <img
+              v-if="imageUrl"
+              :src="imageUrl"
+              width="100
+            %"
+              height="100%"
+              alt="avatar"
+            />
             <div v-else>
               <loading-outlined v-if="loading"></loading-outlined>
               <plus-outlined v-else></plus-outlined>
@@ -93,8 +103,10 @@
 import { reactive, ref, toRaw } from "vue";
 import { Form, UploadChangeParam, UploadProps, message } from "ant-design-vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import axios from "axios";
 const store = useStore();
+const router = useRouter();
 const useForm = Form.useForm;
 const layout = {
   labelCol: { span: 6 },
@@ -166,7 +178,16 @@ const validater = reactive({
     },
   ],
 });
-
+const handleSuccess = ({ code, data, msg }, file) => {
+  if (code === 0) {
+    message.success(msg);
+    localStorage.setItem("loginInfo", JSON.stringify(data));
+    store.commit("setInfoLogin", data);
+    imageUrl.value = data.photo;
+  } else {
+    message.error(res.msg);
+  }
+};
 const formState = reactive({
   // name: "",
   newName: "",
@@ -177,9 +198,9 @@ const formState = reactive({
 const { validate, validateInfos } = useForm(formState, validater);
 
 const onFinish = () => {
+  console.log(onFinish, 'onFinish触发了');
   validate()
     .then((values) => {
-      console.log(values, "values");
       Promise.any([
         axios
           .post("/personal/user", {
@@ -197,9 +218,12 @@ const onFinish = () => {
             message.success(data.msg);
           }),
       ]).then(() => {
-        store.commit("setInfoLogin", null);
-        console.log(store.state.infoLogin, 'store.state.infoLogin');
+        store.commit("setInfoLogin", {});
+        Object.keys(store.state.infoLogin).forEach((key) => {
+          delete store.state.infoLogin[key];
+        });
         localStorage.removeItem("loginInfo");
+        router.push("/");
       });
     })
     .catch((err) => {

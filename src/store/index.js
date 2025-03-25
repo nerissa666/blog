@@ -1,9 +1,9 @@
 import { createStore } from 'vuex'
-
+import { reactive } from 'vue'
 export default createStore({
   state: {
     baseURL: process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4001',
-    infoLogin: null,
+    infoLogin: {}
   },
   getters: {
     baseURL: state => state.baseURL,
@@ -11,9 +11,10 @@ export default createStore({
   },
   mutations: {
     setInfoLogin(state, infoLogin) {
-      Object.keys(infoLogin).forEach(key => {
-        state.infoLogin[key] = infoLogin[key];
-      });
+      // console.log(infoLogin, 'infoLoginvalue')
+      // state.infoLogin = infoLogin;
+      Object.assign(state.infoLogin, infoLogin);
+      // console.log(state.infoLogin, "state.infoLoginmutations");
     },
   },
   actions: {
