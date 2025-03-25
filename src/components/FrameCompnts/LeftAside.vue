@@ -5,7 +5,7 @@
         <div class="avatar">
           <a-avatar src="/file/photo/avatar.jpg" />
           <div class="name">
-            <span>XieGuiXia</span>
+            <span>小红帽</span>
             <p>WEB Developer</p>
           </div>
         </div>

@@ -7,7 +7,7 @@
         <router-link to="/message">留言区</router-link>
         申请友链，本站友链信息：<br />
 
-        名称：桂霞>.< <br />
+        名称：小红帽>.< <br />
 
         主页：<span>http://nerissa.fun</span> <br />
 
