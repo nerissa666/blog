@@ -17,31 +17,28 @@
         <a-tab-pane key="/admin" accesskey="admin" tab="管理" />
       </template>
     </a-tabs>
-    <a-popover placement="bottomRight">
-      <template #content>
-        <a-button type="primary" size="small" @click.stop="updateMsg"
-          >修改信息</a-button
-        >
-        <a style="display: inline-block; width: 5px"></a>
-        <a-button type="primary" size="small" danger @click.stop="logout"
-          >退出登录</a-button
-        >
-      </template>
-      <template #title>{{ loginInfo?.user }}</template>
-      <a-button
-        v-if="!loginInfo?.user"
-        type="primary"
-        size="small"
-        @click="modal2Visible = true"
+    <div @click="modal2Visible = true">
+      <a-button v-if="!loginInfo?.user" type="primary" size="small"
         >登录/注册</a-button
-      ><a-avatar
-        v-else
-        :src="loginInfo?.photo"
-        :size="{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }"
-        @click="modal2Visible = true"
-        style="cursor: pointer"
-      />
-    </a-popover>
+      >
+      <a-popover v-else placement="bottomRight">
+        <template #content>
+          <a-button type="primary" size="small" @click.stop="updateMsg"
+            >修改信息</a-button
+          >
+          <a style="display: inline-block; width: 5px"></a>
+          <a-button type="primary" size="small" danger @click.stop="logout"
+            >退出登录</a-button
+          >
+        </template>
+        <template #title>{{ loginInfo?.user }}</template>
+        <a-avatar
+          :src="loginInfo?.photo"
+          :size="{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }"
+          style="cursor: pointer"
+        />
+      </a-popover>
+    </div>
     <LoginModal
       :modal2Visible="modal2Visible"
       @update:modal2Visible="updateModal2Visible"
@@ -105,7 +102,6 @@ const logout = () => {
     delete loginInfo[key];
   });
 };
-
 </script>
 <style scoped lang="scss">
 .nav_top {

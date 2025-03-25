@@ -59,6 +59,7 @@
         v-bind="layout"
         name="nest-messages-avatar"
         :validate-messages="validateMessages"
+        @finish="onFinish"
       >
         <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 6 }">
           <a-upload
