@@ -4,13 +4,13 @@ export default createStore({
   state: {
     baseURL: process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4001',
     infoLogin: {},
-    activeKey: '/'
+    activeKey: '/',
   },
   getters: {
     baseURL: state => state.baseURL,
     infoLogin: state => state.infoLogin,
     user: state => state.infoLogin._id,
-    isAdmin: state => state.infoLogin._id === '67b52cde340df95d6778af12',
+    isAdmin: state =>  state.infoLogin._id === '67b52cde340df95d6778af12',
     activeKey: state => state.activeKey
   },
   mutations: {

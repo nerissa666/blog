@@ -5,7 +5,6 @@
       :data-source="dataSource"
       bordered
       size="small"
-      @resizeColumn="handleResizeColumn"
     >
       <template #bodyCell="{ column, text, record }">
         <template v-if="['name', 'home', 'des'].includes(column.dataIndex)">
@@ -85,31 +84,31 @@ const columns = [
   {
     title: "名称",
     dataIndex: "name",
-    // width: "20%",
+    width: 1,
     resizable: true,
   },
   {
     title: "首页",
     dataIndex: "home",
-    width: "20%", // Set a fixed width of 100 pixels without 'px'
+    width: 0.5, // Set a fixed width of 100 pixels without 'px'
     resizable: true,
   },
   {
     title: "logo",
     dataIndex: "logo",
-    // width: "20%",
+    width: 1,
     resizable: true,
   },
   {
     title: "描述",
     dataIndex: "des",
     resizable: true,
-    // width: "20%",
+    width: 1,
   },
   {
     title: "operation",
     dataIndex: "operation",
-    // width: "20%",
+    width: 1,
     resizable: true,
   },
 ];
@@ -123,9 +122,6 @@ const columns = [
 //     log: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
 //   });
 // }
-const handleResizeColumn = (w, col) => {
-  col.width = w;
-};
 const dataSource = ref([]);
 const editableData = reactive({});
 const coverList = ref([]);

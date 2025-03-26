@@ -78,7 +78,7 @@
               ]"
             >
               <a-form :model="child" @submit="() => onSubmit(child, item._id)">
-                <a-textarea maxlength="100" v-model:value="child.val" />
+                <a-textarea :maxlength="100" v-model:value="child.val" />
                 <a-button type="primary" size="small" html-type="submit"
                   >发送</a-button
                 ></a-form
@@ -129,7 +129,7 @@
                   :model="grandSon"
                   @submit="() => onSubmit(grandSon, item._id)"
                 >
-                  <a-textarea maxlength="100" v-model:value="grandSon.val" />
+                  <a-textarea :maxlength="100" v-model:value="grandSon.val" />
                   <a-button type="primary" size="small" html-type="submit"
                     >发送</a-button
                   >

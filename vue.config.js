@@ -2,6 +2,16 @@ const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   lintOnSave: false,
   transpileDependencies: true,
+  chainWebpack: (config) => {
+    config.plugin('define').tap((definitions) => {
+      Object.assign(definitions[0], {
+        __VUE_OPTIONS_API__: 'true',
+        __VUE_PROD_DEVTOOLS__: 'false',
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false'
+      })
+      return definitions
+    })
+  },
   devServer: {
     hot: true, //热加载
     host: 'localhost',
@@ -17,7 +27,7 @@ module.exports = defineConfig({
         //   '^/milliaApi': '/'
         // }
       },
-      
+
       /*
       其他基地址，项目如对接不同基地址数据且需交互http与https，
       修改public文件夹里的index.html在head中添加

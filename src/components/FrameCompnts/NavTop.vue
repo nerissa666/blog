@@ -7,14 +7,14 @@
     >
       <img src="@/assets/img/bg/Jerry.jpeg" alt="logo" width="100%" height="" />
     </a>
-    <a-tabs v-model="activeKey" @tabClick="onChange">
-      <a-tab-pane key="/" tab="首页" />
-      <a-tab-pane key="/article" tab="文章" />
-      <a-tab-pane key="/message" tab="留言" />
-      <a-tab-pane key="/link" tab="友链" />
-      <a-tab-pane key="/about" tab="关于" />
+    <a-tabs v-model:activeKey="activeKey" @tabClick="onChange">
+      <a-tab-pane key="/"  tab="首页" />
+      <a-tab-pane key="/article"  tab="文章" />
+      <a-tab-pane key="/message"  tab="留言" />
+      <a-tab-pane key="/link"  tab="友链" />
+      <a-tab-pane key="/about"  tab="关于" />
       <template v-if="isAdmin">
-        <a-tab-pane key="/admin" tab="管理" />
+        <a-tab-pane key="/admin"  tab="管理" />
       </template>
     </a-tabs>
     <div @click="modal2Visible = true">
@@ -58,17 +58,11 @@ const tempInfo = JSON.parse(localStorage.getItem("loginInfo")) || {};
 store.commit("setInfoLogin", tempInfo);
 const loginInfo = reactive(store.state.infoLogin);
 const router = useRouter();
-let activeKey = ref('/');
+let activeKey = ref(store.state.activeKey);
 watch(
   () => store.state.activeKey,
   (newVal) => {
     activeKey.value = newVal;
-    console.log(activeKey.value, "activeKey.watch");
-    nextTick(() => {
-      // // 这里可以安全地访问更新后的DOM
-      const tabsElement = document.querySelector(".ant-tabs");
-      console.log(tabsElement, "tabsElement");
-    });
   }
 );
 watch(
@@ -81,13 +75,13 @@ watch(
 watch(router.currentRoute, (newRoute) => {
   // 根据路由路径更新activeKey
   const key = newRoute.path;
-  console.log(newRoute, "newRoute");
-  if (["/", "/article", "/message", "/link", "/about"].includes(key)) {
-    console.log(key, "key");
+  if (
+    ["/", "/article", "/message", "/link", "/about"].includes(key)
+  ) {
     store.commit("setActiveKey", key);
   }
   // 如果需要处理管理员路由，可以添加额外的逻辑
-  if (isAdmin && key === "/admin") {
+  if (!isAdmin && key === "/admin") {
     message.warning("您不是管理员");
     router.push("/");
   }
@@ -108,7 +102,7 @@ const updateIsLogin = (newVal) => {
 };
 const onChange = (key) => {
   router.push(key);
-  store.commit("setActiveKey", key);
+  store.commit("setActiveKey", "home");
 };
 const logout = () => {
   localStorage.removeItem("loginInfo");

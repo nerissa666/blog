@@ -7,7 +7,6 @@
       layout="horizontal"
       style="max-width: 600px"
       :model="formState"
-      :rules="rules"
       @finish="onSubmit"
     >
       <a-form-item label="名称" name="name">
@@ -19,13 +18,15 @@
       <a-form-item label="描述" name="des">
         <a-textarea :rows="4" v-model:value="formState.des" />
       </a-form-item>
-      <a-form-item label="图标" name="logo">
+      <a-form-item label="图标" name="logoimg">
         <a-upload action="/upload.do" list-type="picture-card">
           <div>
             <PlusOutlined />
             <div style="margin-top: 8px">Upload</div>
           </div>
         </a-upload>
+      </a-form-item>
+      <a-form-item label="图标" name="logo">
         <a-input v-model:value="formState.logo" placeholder="本地上传/url/svg" />
       </a-form-item>
       <a-form-item :wrapper-col="{ ...wrapperCol, offset: 10 }">

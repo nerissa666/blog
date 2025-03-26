@@ -27,31 +27,37 @@ const columns = [
   {
     title: "日期",
     dataIndex: "date",
-    width: "15%",
+    width: 1,
   },
   {
     title: "Name",
     dataIndex: "name",
+    width: 1,
   },
   {
     title: "Email",
     dataIndex: "email",
+    width: 1,
   },
   {
     title: "Subject",
     dataIndex: "subject",
+    width: 1,
   },
   {
     title: "Message",
     dataIndex: "message",
+    width: 1,
   },
   {
     title: "Wechat",
     dataIndex: "wechat",
+    width: 1,
   },
   {
     title: "operation",
     dataIndex: "operation",
+    width: 1,
   },
 ];
 const dataSource = ref([

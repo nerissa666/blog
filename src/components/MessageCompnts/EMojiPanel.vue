@@ -4,7 +4,7 @@
       placement="bottomLeft"
       trigger="click"
       :getPopupContainer="triggerNode"
-      arrow="pointAtCenter"
+      :arrow="true"
       :destroyTooltipOnHide="true"
     >
       <template #content>

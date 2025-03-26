@@ -18,19 +18,16 @@
     <!-- <router-link to="/about">About</router-link> -->
   </div>
 </template>
-<script>
+<script setup>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 import NavTop from "@/components/FrameCompnts/NavTop.vue";
 import LeftAside from "@/components/FrameCompnts/LeftAside.vue";
 import { reactive } from "vue";
-export default {
-  name: "HomeView",
-  components: {
-    NavTop,
-    LeftAside,
-  },
-};
+import { useStore } from "vuex";
+const store = useStore();
+store.commit("setInfoLogin", JSON.parse(localStorage.getItem("loginInfo")) || {});
+
 </script>
 <style lang="scss">
 #app {

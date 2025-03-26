@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ fixed: ifFixed, left_side: true }">
+  <div :class="{ fixed: false, left_side: true }">
     <div class="personal_info">
       <div class="top_info">
         <div class="avatar">

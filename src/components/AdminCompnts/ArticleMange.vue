@@ -108,7 +108,7 @@
               height="100%"
             />
             <div v-else>
-              <loading-outlined v-if="loading"></loading-outlined>
+              <upload-outlined v-if="loading"></upload-outlined>
               <plus-outlined v-else></plus-outlined>
               <div class="ant-upload-text">Upload</div>
             </div>
@@ -142,17 +142,14 @@
 </template>
 
 <script setup>
-import {
-  UploadOutlined,
-  PlusOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons-vue";
+
 import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
 import { message } from "ant-design-vue";
 import request from "umi-request";
 import axios from "axios";
 import { useStore } from "vuex";
+import { UploadOutlined, PlusOutlined } from '@ant-design/icons-vue';
 const store = useStore();
 const baseURL = store.state.baseURL;
 const columns = [

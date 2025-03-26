@@ -26,7 +26,6 @@
           accept=".md"
           :maxCount="1"
           :with-credentials="true"
-          :before-upload="handleBeforeUpload"
           @drop="handleDrop"
           :customRequest="handleCustomRequest"
         >
@@ -47,7 +46,7 @@
           name="file"
           :action="baseURL + '/adminServer/article/cover'"
           :max-count="1"
-          :accept="['image/jpeg', 'image/png']"
+          accept="image/jpeg,image/png"
           list-type="picture-card"
           :with-credentials="true"
           :auto-upload="false"
