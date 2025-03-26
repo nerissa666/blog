@@ -89,9 +89,7 @@ const formState = reactive({
   },
 });
 const onFinish = (values) => {
-  console.log("Success:", values);
   axios.post("/contact", values.user).then(({data}) => {
-    console.log(data);
     message.success(data.msg);
   }).catch(({data}) => {
     message.error(data.msg);

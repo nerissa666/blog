@@ -7,14 +7,14 @@
     >
       <img src="@/assets/img/bg/Jerry.jpeg" alt="logo" width="100%" height="" />
     </a>
-    <a-tabs v-model:activeKey="activeKey" @tabClick="onChange">
-      <a-tab-pane key="/" accesskey="home" tab="首页" />
-      <a-tab-pane key="/article" accesskey="article" tab="文章" />
-      <a-tab-pane key="/message" accesskey="message" tab="留言" />
-      <a-tab-pane key="/link" accesskey="link" tab="友链" />
-      <a-tab-pane key="/about" accesskey="about" tab="关于" />
+    <a-tabs v-model="activeKey" @tabClick="onChange">
+      <a-tab-pane key="/" tab="首页" />
+      <a-tab-pane key="/article" tab="文章" />
+      <a-tab-pane key="/message" tab="留言" />
+      <a-tab-pane key="/link" tab="友链" />
+      <a-tab-pane key="/about" tab="关于" />
       <template v-if="isAdmin">
-        <a-tab-pane key="/admin" accesskey="admin" tab="管理" />
+        <a-tab-pane key="/admin" tab="管理" />
       </template>
     </a-tabs>
     <div @click="modal2Visible = true">
@@ -47,27 +47,52 @@
   </div>
 </template>
 <script setup>
-import { reactive, ref, watch } from "vue";
+import { reactive, ref, watch, nextTick } from "vue";
 import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
 import LoginModal from "./LoginModal.vue";
 import { useStore, mapState, mapGetters } from "vuex";
 const store = useStore();
-const isAdmin = ref(true);
+const isAdmin = ref(store.getters.isAdmin);
 const tempInfo = JSON.parse(localStorage.getItem("loginInfo")) || {};
-console.log(tempInfo, "tempInfo");
 store.commit("setInfoLogin", tempInfo);
 const loginInfo = reactive(store.state.infoLogin);
+const router = useRouter();
+let activeKey = ref('/');
+watch(
+  () => store.state.activeKey,
+  (newVal) => {
+    activeKey.value = newVal;
+    console.log(activeKey.value, "activeKey.watch");
+    nextTick(() => {
+      // // 这里可以安全地访问更新后的DOM
+      const tabsElement = document.querySelector(".ant-tabs");
+      console.log(tabsElement, "tabsElement");
+    });
+  }
+);
 watch(
   () => store.state.infoLogin,
   (newVal) => {
-    console.log(newVal, "watch");
     Object.assign(loginInfo, newVal);
   },
   { deep: true }
 );
-const activeKey = ref("home");
-const router = useRouter();
+watch(router.currentRoute, (newRoute) => {
+  // 根据路由路径更新activeKey
+  const key = newRoute.path;
+  console.log(newRoute, "newRoute");
+  if (["/", "/article", "/message", "/link", "/about"].includes(key)) {
+    console.log(key, "key");
+    store.commit("setActiveKey", key);
+  }
+  // 如果需要处理管理员路由，可以添加额外的逻辑
+  if (isAdmin && key === "/admin") {
+    message.warning("您不是管理员");
+    router.push("/");
+  }
+});
+
 const updateMsg = () => {
   router.push("/user");
 };
@@ -76,24 +101,16 @@ const updateModal2Visible = (newVal) => {
   modal2Visible.value = newVal;
 };
 const updateIsLogin = (newVal) => {
-  // console.log(newVal, "newValupdateIsLogin");
   // Object.assign(loginInfo, newVal);
   // Object.keys(newVal).forEach((key) => {
   //   loginInfo[key] = newVal[key];
   // });
 };
 const onChange = (key) => {
-  switch (key) {
-    case "home":
-      router.push("/");
-      break;
-    default:
-      router.push(key);
-      break;
-  }
+  router.push(key);
+  store.commit("setActiveKey", key);
 };
 const logout = () => {
-  console.log(loginInfo, "退出登录触发了，，");
   localStorage.removeItem("loginInfo");
   store.commit("setInfoLogin", {});
   // 使用ref来创建响应式对象
@@ -101,6 +118,8 @@ const logout = () => {
   Object.keys(loginInfo).forEach((key) => {
     delete loginInfo[key];
   });
+  router.push("/");
+  // store.commit("setActiveKey", "/");
 };
 </script>
 <style scoped lang="scss">

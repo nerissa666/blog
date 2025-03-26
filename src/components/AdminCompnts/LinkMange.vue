@@ -1,12 +1,18 @@
 <template>
   <div class="">
-    <a-table :columns="columns" :data-source="dataSource" bordered>
+    <a-table
+      :columns="columns"
+      :data-source="dataSource"
+      bordered
+      size="small"
+      @resizeColumn="handleResizeColumn"
+    >
       <template #bodyCell="{ column, text, record }">
-        <template v-if="['title', 'home', 'description'].includes(column.dataIndex)">
+        <template v-if="['name', 'home', 'des'].includes(column.dataIndex)">
           <div>
             <a-input
-              v-if="editableData[record.linkId]"
-              v-model:value="editableData[record.linkId][column.dataIndex]"
+              v-if="editableData[record._id]"
+              v-model:value="editableData[record._id][column.dataIndex]"
               style="margin: -5px 0"
             />
             <template v-else>
@@ -15,8 +21,8 @@
           </div>
         </template>
         <template v-else-if="column.dataIndex === 'logo'">
-          <a-upload
-            v-if="editableData[record.linkId]"
+          <!-- <a-upload
+            v-if="editableData[record._id]"
             v-model:file-list="coverList"
             name="avatar"
             list-type="picture-card"
@@ -32,29 +38,34 @@
               <plus-outlined v-else></plus-outlined>
               <div class="ant-upload-text">Upload</div>
             </div>
-          </a-upload>
+          </a-upload> -->
+          <a-input
+            v-if="editableData[record._id]"
+            v-model:value="editableData[record._id][column.dataIndex]"
+            style="margin: -5px 0"
+          />
           <a-avatar v-else :src="record.logo" />
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
           <div class="editable-row-operations">
-            <span v-if="editableData[record.linkId]">
-              <a-typography-link @click="save(record.linkId)"
-                >Save</a-typography-link
+            <span v-if="editableData[record._id]">
+              <a-typography-link @click="save(editableData[record._id])"
+                >保存</a-typography-link
               >
               <a-popconfirm
                 title="Sure to cancel?"
-                @confirm="cancel(record.linkId)"
+                @confirm="cancel(record._id)"
               >
-                <a>Cancel</a>
+                <a>取消</a>
               </a-popconfirm>
             </span>
             <span v-else>
-              <a @click="edit(record.linkId)">Edit</a>
+              <a @click="edit(record._id)">修改</a>
               <a-popconfirm
                 title="Sure to delete?"
-                @confirm="delet(record.linkId, record)"
+                @confirm="delet(record._id, record)"
               >
-                <a>Delete</a>
+                <a>删除</a>
               </a-popconfirm>
             </span>
           </div>
@@ -68,94 +79,111 @@
 import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
 import { message } from "ant-design-vue";
+import axios from "axios";
 
 const columns = [
   {
     title: "名称",
-    dataIndex: "title",
-    width: "25%",
+    dataIndex: "name",
+    // width: "20%",
+    resizable: true,
   },
   {
     title: "首页",
     dataIndex: "home",
-    width: "15%",
+    width: "20%", // Set a fixed width of 100 pixels without 'px'
+    resizable: true,
   },
   {
     title: "logo",
     dataIndex: "logo",
-    width: "20%",
+    // width: "20%",
+    resizable: true,
   },
   {
     title: "描述",
-    dataIndex: "description",
-    width: "40%",
+    dataIndex: "des",
+    resizable: true,
+    // width: "20%",
   },
   {
     title: "operation",
     dataIndex: "operation",
+    // width: "20%",
+    resizable: true,
   },
 ];
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    linkId: i.toString(),
-    title: `Edrward ${i}`,
-    home: 32,
-    description: `London Park no. ${i}`,
-    log: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-  });
-}
-
-const dataSource = ref(data);
+// const data = [];
+// for (let i = 0; i < 100; i++) {
+//   data.push({
+//     _id: i.toString(),
+//     title: `Edrward ${i}`,
+//     home: 32,
+//     des: `London Park no. ${i}`,
+//     log: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+//   });
+// }
+const handleResizeColumn = (w, col) => {
+  col.width = w;
+};
+const dataSource = ref([]);
 const editableData = reactive({});
 const coverList = ref([]);
-const imageUrl = ref('');
+const imageUrl = ref("");
 const loading = ref(false);
-
-const edit = (linkId) => {
-  editableData[linkId] = cloneDeep(
-    dataSource.value.filter((item) => linkId === item.linkId)[0]
+axios.get("/get/link").then(({ data }) => {
+  dataSource.value = data.data;
+});
+const edit = (_id) => {
+  editableData[_id] = cloneDeep(
+    dataSource.value.filter((item) => _id === item._id)[0]
   );
 };
-const save = (linkId) => {
-  Object.assign(
-    dataSource.value.filter((item) => linkId === item.linkId)[0],
-    editableData[linkId]
-  );
-  delete editableData[linkId];
+const save = (record) => {
+  axios.post("/adminServer/link/update", record).then(({ data }) => {
+    if (data.code === 0) {
+      message.success(data.msg);
+    }
+  });
+  delete editableData[record._id];
 };
-const cancel = (linkId) => {
-  delete editableData[linkId];
+const cancel = (_id) => {
+  delete editableData[_id];
 };
-const delet = (linkId) => {
-  dataSource.value = dataSource.value.filter((item) => linkId !== item.linkId);
+const delet = (_id) => {
+  axios.delete("/adminServer/link/delete", { _id }).then(({ data }) => {
+    if (data.code === 0) {
+      message.success(data.msg);
+    }
+  });
+  dataSource.value = dataSource.value.filter((item) => _id !== item._id);
 };
 const coverBeforeUpload = (file) => {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
   if (!isJpgOrPng) {
-    message.error('You can only upload JPG file!');
+    message.error("You can only upload JPG file!");
   }
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
+    message.error("Image must smaller than 2MB!");
   }
   return isJpgOrPng && isLt2M;
 };
 const handleChange = (info) => {
-  if (info.file.status === 'uploading') {
+  if (info.file.status === "uploading") {
     loading.value = true;
     return;
   }
-  if (info.file.status === 'done') {
+  if (info.file.status === "done") {
     // Get this url from response in real world.
     getBase64(info.file.originFileObj, (base64Url) => {
       imageUrl.value = base64Url;
       loading.value = false;
     });
   }
-  if (info.file.status === 'error') {
+  if (info.file.status === "error") {
     loading.value = false;
-    message.error('upload error');
+    message.error("upload error");
   }
 };
 </script>

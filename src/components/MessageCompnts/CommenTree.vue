@@ -14,12 +14,20 @@
         <div class="action_hobby">
           <i
             class="iconfont icon-xinaixin"
-            :class="item.likes.includes('67e0b96ecd5c97cd4fd85d97') && 'like'"
-            @click.stop="() => handleLike(item)"
+            :class="item.likes.includes(user) && 'like'"
+            @click.stop="() => handleLike(item, true)"
           />
           <span>{{ item.likes.length }}</span>
-          <i class="iconfont icon-huifu" @click.stop="() => item.openPanel = !item?.openPanel" />
-          <div :class="['action_comment', item?.openPanel ? 'open_panel' : 'close_panel']">
+          <i
+            class="iconfont icon-huifu"
+            @click.stop="() => (item.openPanel = !item?.openPanel)"
+          />
+          <div
+            :class="[
+              'action_comment',
+              item?.openPanel ? 'open_panel' : 'close_panel',
+            ]"
+          >
             <a-form :model="item" @submit="() => onSubmit(item)">
               <a-textarea :maxlength="100" v-model:value="item.val" />
               <a-button type="primary" size="small" html-type="submit"
@@ -36,7 +44,7 @@
       </template>
       <a-comment
         class="child_comment"
-        v-for="child in item.children"
+        v-for="(child, index) in item.children"
         :key="child._id"
       >
         <template #actions v-if="child?.replyUser">
@@ -55,19 +63,26 @@
           <div class="action_hobby">
             <i
               class="iconfont icon-xinaixin"
-              :class="
-                child.likes.includes('67e0b96ecd5c97cd4fd85d97') && 'like'
-              "
-              @click.stop="() => handleLike(child)"
+              :class="child.likes.includes(user) && 'like'"
+              @click.stop="() => handleLike({cIndex: index, cID :child._id, pID :item._id})"
             />
             <span>{{ child.likes.length }}</span>
-            <i class="iconfont icon-huifu" @click.stop="() => child.openPanel = !child?.openPanel" />
-            <div :class="['action_comment', child?.openPanel ? 'open_panel' : 'close_panel']">
+            <i
+              class="iconfont icon-huifu"
+              @click.stop="() => (child.openPanel = !child?.openPanel)"
+            />
+            <div
+              :class="[
+                'action_comment',
+                child?.openPanel ? 'open_panel' : 'close_panel',
+              ]"
+            >
               <a-form :model="child" @submit="() => onSubmit(child, item._id)">
-              <a-textarea maxlength="100" v-model:value="child.val" />
-              <a-button type="primary" size="small" html-type="submit"
-                >发送</a-button
-              ></a-form>
+                <a-textarea maxlength="100" v-model:value="child.val" />
+                <a-button type="primary" size="small" html-type="submit"
+                  >发送</a-button
+                ></a-form
+              >
             </div>
           </div>
         </template>
@@ -77,7 +92,7 @@
           </a-tooltip>
         </template>
         <a-comment
-          v-for="grandSon in child?.childrens"
+          v-for="(grandSon, index) in child?.childrens"
           :key="grandSon.commentId"
         >
           <template #actions v-if="grandSon?.replyTo">
@@ -96,20 +111,28 @@
             <div class="action_hobby">
               <i
                 class="iconfont icon-xinaixin"
-                :class="
-                  grandSon.likeList.includes('67e0b96ecd5c97cd4fd85d97') &&
-                  'like'
-                "
-                @click.stop="() => handleLike(grandSon)"
+                :class="grandSon.likeList.includes(user) && 'like'"
+                @click.stop="() => handleLike(cIndex, grandSon, item._id)"
               />
               <span>{{ grandSon.likeList.length }}</span>
-              <i class="iconfont icon-huifu" @click.stop="() => grandSon.openPanel = !grandSon?.openPanel" />
-              <div :class="['action_comment', grandSon.openPanel ? 'open_panel' : 'close_panel']" >
-                <a-form :model="grandSon" @submit="() => onSubmit(grandSon, item._id)">
-                <a-textarea maxlength="100" v-model:value="grandSon.val" />
-                <a-button type="primary" size="small" html-type="submit"
-                  >发送</a-button
+              <i
+                class="iconfont icon-huifu"
+                @click.stop="() => (grandSon.openPanel = !grandSon?.openPanel)"
+              />
+              <div
+                :class="[
+                  'action_comment',
+                  grandSon.openPanel ? 'open_panel' : 'close_panel',
+                ]"
+              >
+                <a-form
+                  :model="grandSon"
+                  @submit="() => onSubmit(grandSon, item._id)"
                 >
+                  <a-textarea maxlength="100" v-model:value="grandSon.val" />
+                  <a-button type="primary" size="small" html-type="submit"
+                    >发送</a-button
+                  >
                 </a-form>
               </div>
             </div>
@@ -133,8 +156,17 @@ import {
   defineExpose,
   onUpdated,
   onBeforeUpdate,
+  watch,
+  computed,
+  ref,
 } from "vue";
 import { message } from "ant-design-vue";
+import store from "@/store";
+let user = ref(store.getters.user);
+
+watch(store.state.infoLogin, () => {
+  user = computed(() => store.getters.user);
+});
 const rootComment = reactive([
   // {
   //   commentId: "1",
@@ -215,8 +247,7 @@ const getComment = () => {
         rootComment.push(item);
       });
     })
-    .catch((err) => {
-    });
+    .catch((err) => {});
 };
 
 defineExpose({
@@ -226,24 +257,43 @@ onMounted(() => {
   getComment();
 });
 
-const handleLike = ({ _id: id }) => {
-  axios
-    .post("/msg/like/parent", { id })
-    .then(({ data: { msg } }) => {
-      message.success(msg);
-      getComment();
-    })
-    .catch((err) => {
-      message.error(err.msg);
-    });
+const handleLike = ({ _id: id, cID, pID ,cIndex}, isParent = false) => {
+  isParent &&
+    axios
+      .post("/msg/like/parent", { id })
+      .then(({ data: { msg } }) => {
+        message.success(msg);
+        getComment();
+      })
+      .catch((err) => {
+        message.error(err.msg);
+      });
+  !isParent &&
+    axios
+      .post("/msg/like/child", {
+        cID,
+        cIndex,
+        pID,
+      })
+      .then(({ data: { msg } }) => {
+        message.success(msg);
+        getComment();
+      })
+      .catch((err) => {
+        message.error(err.msg);
+      });
 };
 
-const onSubmit = async ({_id: id, author,val}, parentId) => {
+const onSubmit = async ({ _id: id, author, val }, parentId) => {
   axios
-    .post("/msg/reply/submit", { id: parentId || id, replyUser:author._id, text:val })
+    .post("/msg/reply/submit", {
+      id: parentId || id,
+      replyUser: author._id,
+      text: val,
+    })
     .then(async ({ data: { msg } }) => {
       message.success(msg);
-      getComment()
+      getComment();
     })
     .catch((err) => {
       message.error(err.msg);

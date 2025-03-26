@@ -199,7 +199,6 @@ const formState = reactive({
 const { validate, validateInfos } = useForm(formState, validater);
 
 const onFinish = () => {
-  console.log(onFinish, 'onFinish触发了');
   validate()
     .then((values) => {
       Promise.any([
@@ -228,7 +227,6 @@ const onFinish = () => {
       });
     })
     .catch((err) => {
-      console.log("error", err);
     });
 };
 

@@ -65,10 +65,8 @@ axios
   .get("/get/article")
   .then(({ data }) => {
     data.data.forEach((item, index) => {
-      console.log(new Date(item.date));
       dataList.push(item);
     });
-    console.log(data);
   })
   .catch((err) => {});
 const router = useRouter();

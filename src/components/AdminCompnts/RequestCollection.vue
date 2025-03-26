@@ -1,12 +1,15 @@
 <template>
-  <div class="">
-    <a-table bordered :data-source="dataSource" :columns="columns">
+  <div class="table-container">
+    <a-table bordered :data-source="dataSource" :columns="columns" size="small">
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'wechat'">
           <a-image width="100%" :src="record.wechat" />
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
-          <a-switch v-model:checked="record.checked" @change="handleChange" />
+          <a-switch
+            v-model:checked="record.read"
+            @change="() => handleChange(record)"
+          />
         </template>
         <template v-else>
           {{ text || " " }}
@@ -18,6 +21,8 @@
 
 <script setup>
 import { ref } from "vue";
+import axios from "axios";
+import { message } from "ant-design-vue";
 const columns = [
   {
     title: "日期",
@@ -50,45 +55,56 @@ const columns = [
   },
 ];
 const dataSource = ref([
-  {
-    requestId: "0",
-    date: "Edward King 0",
-    name: 32,
-    email: "edwardking@yahoo.com",
-    subject: "London, Park Lane no. 0",
-    message: "London, Park Lane no. 0",
-    wechat:
-      "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    checked: true,
-  },
-  {
-    requestId: "0",
-    date: "Edward King 0",
-    name: 32,
-    email: "edwardking@yahoo.com",
-    subject: "London, Park Lane no. 0",
-    message: "London, Park Lane no. 0",
-    wechat:
-      "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    checked: true,
-  },
-  {
-    requestId: "0",
-    date: "Edward King 0",
-    name: 32,
-    email: "edwardking@yahoo.com",
-    subject: "London, Park Lane no. 0",
-    message: "London, Park Lane no. 0",
-    wechat:
-      "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    checked: true,
-  },
+  // {
+  //   requestId: "0",
+  //   date: "Edward King 0",
+  //   name: 32,
+  //   email: "edwardking@yahoo.com",
+  //   subject: "London, Park Lane no. 0",
+  //   message: "London, Park Lane no. 0",
+  //   wechat:
+  //     "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+  //   checked: true,
+  // },
+  // {
+  //   requestId: "0",
+  //   date: "Edward King 0",
+  //   name: 32,
+  //   email: "edwardking@yahoo.com",
+  //   subject: "London, Park Lane no. 0",
+  //   message: "London, Park Lane no. 0",
+  //   wechat:
+  //     "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+  //   checked: true,
+  // },
+  // {
+  //   requestId: "0",
+  //   date: "Edward King 0",
+  //   name: 32,
+  //   email: "edwardking@yahoo.com",
+  //   subject: "London, Park Lane no. 0",
+  //   message: "London, Park Lane no. 0",
+  //   wechat:
+  //     "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
+  //   checked: true,
+  // },
 ]);
-const handleChange = (checked, record) => {
-  console.log(checked, record);
+axios.get("/adminServer/contact").then(({ data }) => {
+  dataSource.value = data.data;
+});
+const handleChange = ({  read, _id: id }) => {
+  axios
+    .post("/adminServer/contact/read", {
+      id,
+      read,
+    })
+    .then(({ data }) => {
+      if (data.code === 0) {
+        message.success(data.msg);
+      }
+    });
 };
 </script>
-
 <style scoped lang="scss">
 .editable-cell {
   position: relative;

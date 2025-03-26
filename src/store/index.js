@@ -3,23 +3,31 @@ import { reactive } from 'vue'
 export default createStore({
   state: {
     baseURL: process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4001',
-    infoLogin: {}
+    infoLogin: {},
+    activeKey: '/'
   },
   getters: {
     baseURL: state => state.baseURL,
     infoLogin: state => state.infoLogin,
+    user: state => state.infoLogin._id,
+    isAdmin: state => state.infoLogin._id === '67b52cde340df95d6778af12',
+    activeKey: state => state.activeKey
   },
   mutations: {
     setInfoLogin(state, infoLogin) {
-      // console.log(infoLogin, 'infoLoginvalue')
       // state.infoLogin = infoLogin;
       Object.assign(state.infoLogin, infoLogin);
-      // console.log(state.infoLogin, "state.infoLoginmutations");
+    },
+    setActiveKey(state, activeKey) {
+      state.activeKey = activeKey;
     },
   },
   actions: {
     setInfoLogin(context, infoLogin) {
       context.commit('setInfoLogin', infoLogin);
+    },
+    setActiveKey(context, activeKey) {
+      context.commit('setActiveKey', activeKey);
     },
   },
   modules: {

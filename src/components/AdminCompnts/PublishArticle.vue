@@ -88,30 +88,47 @@ import { message } from "ant-design-vue";
 const fileList = ref([]);
 let [tempOptions, tempFileObj] = [[], {}];
 
+// const handleSuccess = (response, file, fileList) => {
+// };
 const handleCustomRequest = (options) => {
+  if (options.action.endsWith("md")) {
+    formArticle.title = options.file.name;
+  }
   tempOptions.push(options);
 };
 const onSubmit = () => {
   const promiseAll = [];
   tempOptions.forEach((item) => {
     promiseAll.push(
-        axios.post(item.action, item.file).then(({ data }) => {
-          if (data.code === 0) {
-            if (item.action.endsWith("md")) {
-              tempFileObj.md = data.url;
+      new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append("file", item.file);
+        axios
+          .post(item.action, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then(({ data }) => {
+            if (data.code === 0) {
+              if (item.action.endsWith("md")) {
+                tempFileObj.md = data.url;
+              } else {
+                tempFileObj.cover = data.url;
+              }
+              resolve(data);
             } else {
-              tempFileObj.cover = data.url;
+              message.error(data.msg);
+              reject(data);
             }
-          } else {
-            message.error(data.msg);
-          }
-          item.onSuccess();
-          // tempOptions = [];
+          })
+          .catch((err) => {
+            reject(err);
+          });
       })
     );
   });
   Promise.all(promiseAll).then(() => {
-    console.log(formArticle, "formArticlePromise");
     axios
       .post("/adminServer/article/add", {
         ...formArticle,
@@ -120,7 +137,6 @@ const onSubmit = () => {
       .then(({ data }) => {
         if (data.code === 0) {
           message.success(data.msg);
-          // console.log(data, "data.data.id");
           router.push("/article/" + data.data.id);
         } else {
           message.error(data.msg);
@@ -139,7 +155,6 @@ const handleChange = (info) => {
   }
 };
 function handleDrop(e) {
-  console.log(e);
 }
 </script>
 

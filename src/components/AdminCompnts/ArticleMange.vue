@@ -10,11 +10,11 @@
     />
     <a-table :columns="columns" :data-source="dataSource" bordered>
       <template #bodyCell="{ column, text, record }">
-        <template v-if="['title', 'description'].includes(column.dataIndex)">
+        <template v-if="['title', 'des'].includes(column.dataIndex)">
           <div>
             <a-input
-              v-if="editableData[record.articleID]"
-              v-model:value="editableData[record.articleID][column.dataIndex]"
+              v-if="editableData[record._id]"
+              v-model:value="editableData[record._id][column.dataIndex]"
               style="margin: -5px 0"
             />
 
@@ -25,15 +25,13 @@
         </template>
         <template v-else-if="column.dataIndex === 'tags'">
           <span>
-            <template v-if="editableData[record.articleID]">
+            <template v-if="editableData[record._id]">
               <a-tag
                 v-for="tag in record.tags"
                 :key="tag"
-                :closable="Boolean(editableData[record.articleID])"
-                @close="
-                  () => closeTag(editableData[record.articleID].tags, tag)
-                "
-                :articleID="tag"
+                :closable="Boolean(editableData[record._id])"
+                @close="() => closeTag(editableData[record._id].tags, tag)"
+                :_id="tag"
                 :color="
                   tag === 'loser'
                     ? 'volcano'
@@ -48,7 +46,7 @@
             <template v-else>
               <a-tag
                 v-for="tag in record.tags"
-                :articleID="tag"
+                :_id="tag"
                 :color="
                   tag === 'loser'
                     ? 'volcano'
@@ -62,33 +60,53 @@
             </template>
           </span>
         </template>
-        <template v-else-if="column.dataIndex === 'mdfile'">
+        <template v-else-if="column.dataIndex === 'md'">
           <a-upload
-            v-if="editableData[record.articleID]"
-            :file-list="fileList"
-            :before-upload="beforeUpload"
-            @remove="handleRemove"
+            v-if="editableData[record._id]"
+            name="file"
+            :action="baseURL + '/adminServer/article/md'"
+            :max-count="1"
+            accept=".md"
+            :auto-upload="true"
+            :with-credentials="true"
+            :customRequest="
+              (options) =>
+                handleCustomRequest(options, editableData[record._id])
+            "
           >
             <a-button>
               <upload-outlined></upload-outlined>
               Select File
             </a-button>
           </a-upload>
-          <a :href="'/article:' + record.articleID" v-else>{{ text }}</a>
+          <a :href="'/article/' + record._id" v-else>{{ text }}</a>
         </template>
         <template v-else-if="column.dataIndex === 'cover'">
           <a-upload
-            v-if="editableData[record.articleID]"
+            v-if="editableData[record._id]"
             v-model:file-list="coverList"
-            name="avatar"
+            name="file"
+            accept="image/jpeg,image/png"
             list-type="picture-card"
+            :action="baseURL + '/adminServer/article/cover'"
             class="avatar-uploader"
             :show-upload-list="false"
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            :with-credentials="true"
             :before-upload="coverBeforeUpload"
             @change="handleChange"
+            :max-count="1"
+            :customRequest="
+              (options) =>
+                handleCustomRequest(options, editableData[record._id])
+            "
           >
-            <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+            <img
+              v-if="imageUrl"
+              :src="imageUrl"
+              alt="avatar"
+              width="100%"
+              height="100%"
+            />
             <div v-else>
               <loading-outlined v-if="loading"></loading-outlined>
               <plus-outlined v-else></plus-outlined>
@@ -99,24 +117,21 @@
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
           <div class="editable-row-operations">
-            <span v-if="editableData[record.articleID]">
-              <a-typography-link @click="save(record.articleID)"
-                >Save</a-typography-link
+            <span v-if="editableData[record._id]">
+              <a-typography-link @click="save(editableData[record._id])"
+                >保存</a-typography-link
               >
               <a-popconfirm
                 title="Sure to cancel?"
-                @confirm="cancel(record.articleID)"
+                @confirm="cancel(record._id)"
               >
-                <a>Cancel</a>
+                <a>取消</a>
               </a-popconfirm>
             </span>
             <span v-else>
-              <a @click="edit(record.articleID)">Edit</a>
-              <a-popconfirm
-                title="Sure to delete?"
-                @confirm="delet(record.articleID, record)"
-              >
-                <a>Delete</a>
+              <a @click="edit(record._id)">修改</a>
+              <a-popconfirm title="Sure to delete?" @confirm="delet(record)">
+                <a>删除</a>
               </a-popconfirm>
             </span>
           </div>
@@ -127,12 +142,19 @@
 </template>
 
 <script setup>
-import { UploadOutlined,PlusOutlined, LoadingOutlined  } from "@ant-design/icons-vue";
+import {
+  UploadOutlined,
+  PlusOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons-vue";
 import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
 import { message } from "ant-design-vue";
 import request from "umi-request";
-
+import axios from "axios";
+import { useStore } from "vuex";
+const store = useStore();
+const baseURL = store.state.baseURL;
 const columns = [
   {
     title: "标题",
@@ -141,18 +163,18 @@ const columns = [
   },
   {
     title: "描述",
-    dataIndex: "description",
+    dataIndex: "des",
     width: "20%",
   },
   {
     title: "TAG",
-    articleID: "tags",
+    _id: "tags",
     dataIndex: "tags",
   },
   {
     title: "md文件",
-    articleID: "mdfile",
-    dataIndex: "mdfile",
+    _id: "md",
+    dataIndex: "md",
   },
   {
     title: "封面图",
@@ -162,53 +184,35 @@ const columns = [
   {
     title: "operation",
     dataIndex: "operation",
+    width: "20%",
   },
 ];
-
-const data = [];
-for (let i = 0; i < 3; i++) {
-  data.push({
-    articleID: i.toString(),
-    title: `Edrward ${i}`,
-    tags: ["nice", "developer"],
-    description: "32",
-    cover: "https://www.antdv.com/assets/logo.1ef800a8.svg",
-    mdfile: "werewfw",
-    // articleID: "123",
-  });
-}
-data.unshift({
-  articleID: "wcwrc",
-  title: "xgx",
-  tags: ["beauty", "developer"],
-  description: "16",
-  cover: "https://www.antdv.com/assets/logo.1ef800a8.svg",
-  mdfile: "123",
-  articleID: "123",
-});
-const dataSource = ref(data);
+const dataSource = ref([]);
 const editableData = reactive({});
+const getArticle = () => {
+  axios.get("/get/article").then(({ data }) => {
+    dataSource.value = data.data;
+  });
+};
+getArticle();
+const edit = (_id) => {
+  editableData[_id] = cloneDeep(
+    dataSource.value.filter((item) => _id === item._id)[0]
+  );
+};
+const delet = ({ _id: id }) => {
+  axios.delete("/adminServer/article/delete", {
+    data: {
+      id,
+    },
+  }).then(({ data }) => {
+    message.success(data.msg);
+    getArticle();
+  });
+};
 
-const edit = (articleID) => {
-  editableData[articleID] = cloneDeep(
-    dataSource.value.filter((item) => articleID === item.articleID)[0]
-  );
-};
-const delet = (articleID, record) => {
-  dataSource.value = dataSource.value.filter(
-    (item) => articleID !== item.articleID
-  );
-};
-const save = (articleID) => {
-  Object.assign(
-    dataSource.value.filter((item) => articleID === item.articleID)[0],
-    editableData[articleID]
-  );
-  delete editableData[articleID];
-  handleUpload();
-};
-const cancel = (articleID) => {
-  delete editableData[articleID];
+const cancel = (_id) => {
+  delete editableData[_id];
 };
 const closeTag = (tags, tag) => {
   tags.includes(tag) && tags.splice(tags.indexOf(tag), 1);
@@ -217,6 +221,7 @@ const value = ref("");
 const onSearch = (searchValue) => {
   const valReg = new RegExp(".*" + value.value + ".*");
   const tempData = [];
+  
   dataSource.value.filter((item) => {
     for (const val in item) {
       if (typeof item[val] !== "object") {
@@ -233,9 +238,55 @@ const onSearch = (searchValue) => {
   dataSource.value = tempData;
 };
 const handleClear = () => {
-  if (!value.value) return (dataSource.value = data);
+  if (!value.value) return (getArticle());
+};
+let tempOptions = {};
+const handleCustomRequest = (options, record) => {
+  if (options.action.endsWith("md")) {
+    record.title = options.file.name;
+  }
+  // const actionPath = options.action.split('/').pop();
+  !tempOptions[record._id]
+    ? (tempOptions[record._id] = [options])
+    : tempOptions[record._id].push(options);
 };
 
+const save = (record) => {
+  const tempPromiseAll = [];
+  const tempData = {};
+  tempOptions[record._id].forEach((item) => {
+    const formData = new FormData();
+    formData.append("file", item.file);
+    tempPromiseAll.push(
+      axios
+        .post(item.action, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(({ data }) => {
+          item.onSuccess();
+          tempData[record._id] = {
+            ...tempData[record._id],
+            [item.action.split("/").pop()]: data.url,
+          };
+        })
+    );
+  });
+  Promise.all(tempPromiseAll).then(() => {
+    axios
+      .post("/adminServer/article/update", {
+        id: record._id,
+        doc: { ...tempData[record._id], des: record.des, title: record.title },
+      })
+      .then(({ data }) => {
+        message.success(data.msg);
+        delete editableData[record._id];
+        getArticle();
+        // tempOptions[record._id] = [];
+      });
+  });
+};
 const fileList = ref([]);
 const uploading = ref(false);
 
@@ -247,8 +298,7 @@ const handleRemove = (file) => {
 };
 
 const beforeUpload = (file) => {
-  fileList.value = [...(fileList.value || []), file];
-  return false;
+  fileList.value = [file];
 };
 
 const handleUpload = () => {
@@ -276,40 +326,40 @@ const handleUpload = () => {
 
 function getBase64(img, callback) {
   const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
+  reader.addEventListener("load", () => callback(reader.result));
   reader.readAsDataURL(img);
 }
 
 const coverList = ref([]);
 const loading = ref(false);
-const imageUrl = ref('');
+const imageUrl = ref("");
 
 const handleChange = (info) => {
-  if (info.file.status === 'uploading') {
+  if (info.file.status === "uploading") {
     loading.value = true;
     return;
   }
-  if (info.file.status === 'done') {
+  if (info.file.status === "done") {
     // Get this url from response in real world.
     getBase64(info.file.originFileObj, (base64Url) => {
       imageUrl.value = base64Url;
       loading.value = false;
     });
   }
-  if (info.file.status === 'error') {
+  if (info.file.status === "error") {
     loading.value = false;
-    message.error('upload error');
+    message.error("upload error");
   }
 };
 
 const coverBeforeUpload = (file) => {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
   if (!isJpgOrPng) {
-    message.error('You can only upload JPG file!');
+    message.error("You can only upload JPG file!");
   }
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
+    message.error("Image must smaller than 2MB!");
   }
   return isJpgOrPng && isLt2M;
 };
