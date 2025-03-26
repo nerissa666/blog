@@ -9,9 +9,9 @@
 
         名称：小红帽>.o<br />
 
-        主页：<span>http://nerissa.fun</span> <br />
+        主页：<span>https://nerissa666.xyz</span> <br />
 
-        图标：<span>http://nerissa.fun/logo.png</span> <br />
+        图标：<span>https://nerissa666.xyz/logo.png</span> <br />
 
         描述：一名没秃头的前端工程师😆
       </article>

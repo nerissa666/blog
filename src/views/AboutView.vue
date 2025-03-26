@@ -18,7 +18,7 @@
 
           后 端：<span>Node + Nuxt + Express + Mongodb</span><br />
 
-          服务器：<a href="https://www.aliyun.com/benefit" target="_blank">阿里云ECS</a><br />
+          服务器：<a href="https://vercel.com/" target="_blank">Vercel</a><br />
         </p>
         这个博客我在2021年就开始构思了，终于要在2025年上线了！我真棒！😂
         这不能怪我...真的...每当我好不容易挤点时间写好代码准备上线时，总有前端技术在这个时间点做大的更新...React、Node、Vue、Nuxt...我也很绝望啊，每次都是推翻重写，裂开...
