@@ -165,23 +165,7 @@ const coverBeforeUpload = (file) => {
   }
   return isJpgOrPng && isLt2M;
 };
-const handleChange = (info) => {
-  if (info.file.status === "uploading") {
-    loading.value = true;
-    return;
-  }
-  if (info.file.status === "done") {
-    // Get this url from response in real world.
-    getBase64(info.file.originFileObj, (base64Url) => {
-      imageUrl.value = base64Url;
-      loading.value = false;
-    });
-  }
-  if (info.file.status === "error") {
-    loading.value = false;
-    message.error("upload error");
-  }
-};
+
 </script>
 
 <style scoped lang="scss">

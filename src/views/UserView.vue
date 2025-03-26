@@ -133,7 +133,7 @@ const passWordValidator = (_, value) => {
     return Promise.reject(new Error("请输入6~18位的密码"));
   }
   //规则验证
-  if (!/^[\w\[\]\/\\~`|<>,.?;':"{}!@#$%^&*()_+=-]+$/.test(value)) {
+  if (!/^[\w[\]/\\~`|<>,.?;':"{}!@#$%^&*()_+=-]+$/.test(value)) {
     return Promise.reject(new Error("不允许的密码字符"));
   }
   return Promise.resolve();
@@ -151,7 +151,7 @@ const validater = reactive({
           return Promise.reject("只允许 数字 字母 _ 中/日/韩文");
         }
         //不能和原来的一样
-        if (value === user) {
+        if (value === user.value) {
           return Promise.reject("用户名没有变化...");
         }
         return Promise.resolve();
@@ -186,7 +186,7 @@ const handleSuccess = ({ code, data, msg }, file) => {
     store.commit("setInfoLogin", data);
     imageUrl.value = data.photo;
   } else {
-    message.error(res.msg);
+    message.error(msg);
   }
 };
 const formState = reactive({

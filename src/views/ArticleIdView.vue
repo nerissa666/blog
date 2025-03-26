@@ -11,7 +11,7 @@ const route = useRoute();
 onMounted(() => {
   axios.get("/get/articleID?id=" + route.params.id).then(({ data }) => {
     axios.get(data.data.md).then(({ data: md }) => {
-      editormd.markdownToHTML("mdToHTML", {
+      window.editormd.markdownToHTML("mdToHTML", {
         markdown: md,
         emoji: true,
       });

@@ -81,7 +81,7 @@ watch(router.currentRoute, (newRoute) => {
     store.commit("setActiveKey", key);
   }
   // 如果需要处理管理员路由，可以添加额外的逻辑
-  if (!isAdmin && key === "/admin") {
+  if (!isAdmin.value && key === "/admin") {
     message.warning("您不是管理员");
     router.push("/");
   }

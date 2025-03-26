@@ -92,7 +92,7 @@
           </a-tooltip>
         </template>
         <a-comment
-          v-for="(grandSon, index) in child?.childrens"
+          v-for="(grandSon) in child?.childrens"
           :key="grandSon.commentId"
         >
           <template #actions v-if="grandSon?.replyTo">

@@ -145,8 +145,7 @@ const onSubmit = () => {
 };
 const handleChange = (info) => {
   const status = info.file.status;
-  if (status !== "uploading") {
-  }
+
   if (status === "done") {
     message.success(`${info.file.name} file uploaded successfully.`);
   } else if (status === "error") {

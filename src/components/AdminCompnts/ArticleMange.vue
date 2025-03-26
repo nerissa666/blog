@@ -46,6 +46,7 @@
             <template v-else>
               <a-tag
                 v-for="tag in record.tags"
+                :key="tag"
                 :_id="tag"
                 :color="
                   tag === 'loser'

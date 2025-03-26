@@ -7,7 +7,7 @@
         <router-link to="/message">留言区</router-link>
         申请友链，本站友链信息：<br />
 
-        名称：小红帽>.< <br />
+        名称：小红帽>.o<br />
 
         主页：<span>http://nerissa.fun</span> <br />
 
@@ -31,7 +31,7 @@
           />
         </svg>
         <div class="top">
-          <template v-if="!item.logo" class="logo">
+          <template v-if="!item.logo">
             <svg v-html="item.svg" />
           </template>
           <div
