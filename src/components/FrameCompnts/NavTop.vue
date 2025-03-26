@@ -134,19 +134,19 @@ const logout = () => {
     // ::v-deep .ant-tabs-nav-wrap {
     //   width: 100%;
     // }
-    ::v-deep .ant-tabs-nav {
+    :deep(.ant-tabs-nav ){
       margin: 0;
     }
-    ::v-deep .ant-tabs-tab {
+    :deep(.ant-tabs-tab ){
       flex: 1;
     }
-    ::v-deep .ant-tabs-nav .ant-tabs-nav-list {
+    :deep(.ant-tabs-nav .ant-tabs-nav-list ){
       width: 100%;
     }
     .ant-tabs-tab {
       flex: 1;
     }
-    ::v-deep .ant-tabs-tab-btn {
+    :deep(.ant-tabs-tab-btn ){
       width: 100%;
     }
   }
