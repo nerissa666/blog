@@ -2,7 +2,7 @@ import axios, { InternalAxiosRequestConfig, AxiosResponse } from "axios";
 // const baseURL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4001';
 
 // const baseURL = process.env.NODE_ENV === 'production' ? 'http://124.71.203.87' : 'http://localhost:4001';
-const baseURL = process.env.NODE_ENV !== 'production' ? 'http://124.71.203.87' : 'http://localhost:4001';
+const baseURL = process.env.NODE_ENV === 'production' ? 'http://124.71.203.87' : 'http://localhost:4001';
 
 // 请求拦截
 axios.interceptors.request.use((config) => {
