@@ -23,4 +23,5 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-I will continue review the code and make changes as needed. for example style reactive ,add request ,responce interceptors and son on.
+I will continue review the code and make changes as needed. for example style reactive ,add request ,responce interceptors and son on. update login info avatar auto upload
+admin login not rerender nav list ；shortcut operation

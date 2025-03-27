@@ -17,7 +17,7 @@
       </article>
     </div>
     <div class="svg_block">
-      <a :href="item.home" v-for="item in linkList" :key="item.name">
+      <a :href="item.home" v-for="item in linkList" target="_blank" :key="item.name">
         <svg
           viewBox="0 0 300 100"
           preserveAspectRatio="none"
@@ -74,8 +74,8 @@ const linkList = ref([
   },
 ]);
 axios.get("/get/link").then(({ data }) => {
-  // linkList.push(...data.data); reactive 不能直接赋值
-  linkList.value = data.data;
+  // linkList.push(...data); reactive 不能直接赋值
+  linkList.value = data;
 });
 </script>
 <style scoped lang="scss">

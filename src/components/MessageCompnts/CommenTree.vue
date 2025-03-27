@@ -64,7 +64,10 @@
             <i
               class="iconfont icon-xinaixin"
               :class="child.likes.includes(user) && 'like'"
-              @click.stop="() => handleLike({cIndex: index, cID :child._id, pID :item._id})"
+              @click.stop="
+                () =>
+                  handleLike({ cIndex: index, cID: child._id, pID: item._id })
+              "
             />
             <span>{{ child.likes.length }}</span>
             <i
@@ -92,7 +95,7 @@
           </a-tooltip>
         </template>
         <a-comment
-          v-for="(grandSon) in child?.childrens"
+          v-for="grandSon in child?.childrens"
           :key="grandSon.commentId"
         >
           <template #actions v-if="grandSon?.replyTo">
@@ -239,15 +242,12 @@ const rootComment = reactive([
   // }
 ]);
 const getComment = () => {
-  axios
-    .get("/get/msg")
-    .then(({ data }) => {
-      rootComment.length = 0;
-      data.data.forEach((item, index) => {
-        rootComment.push(item);
-      });
-    })
-    .catch((err) => {});
+  axios.get("/get/msg").then(({ data }) => {
+    rootComment.length = 0;
+    data.forEach((item, index) => {
+      rootComment.push(item);
+    });
+  });
 };
 
 defineExpose({
@@ -257,17 +257,16 @@ onMounted(() => {
   getComment();
 });
 
-const handleLike = ({ _id: id, cID, pID ,cIndex}, isParent = false) => {
+const handleLike = ({ _id: id, cID, pID, cIndex }, isParent = false) => {
   isParent &&
     axios
       .post("/msg/like/parent", { id })
-      .then(({ data: { msg } }) => {
+      // .then(({ data: { msg } }) => {
+      .then(({ msg }) => {
         message.success(msg);
         getComment();
-      })
-      .catch((err) => {
-        message.error(err.msg);
       });
+
   !isParent &&
     axios
       .post("/msg/like/child", {
@@ -275,12 +274,10 @@ const handleLike = ({ _id: id, cID, pID ,cIndex}, isParent = false) => {
         cIndex,
         pID,
       })
-      .then(({ data: { msg } }) => {
+      // .then(({ data: { msg } }) => {
+      .then(({ msg }) => {
         message.success(msg);
         getComment();
-      })
-      .catch((err) => {
-        message.error(err.msg);
       });
 };
 
@@ -291,12 +288,9 @@ const onSubmit = async ({ _id: id, author, val }, parentId) => {
       replyUser: author._id,
       text: val,
     })
-    .then(async ({ data: { msg } }) => {
+    .then(async ({ msg }) => {
       message.success(msg);
       getComment();
-    })
-    .catch((err) => {
-      message.error(err.msg);
     });
 };
 const formatDate = (date) => {

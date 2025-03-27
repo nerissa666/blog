@@ -208,17 +208,14 @@ const visitorList = reactive([
 axios
   .get("/get/article")
   .then(({ data }) => {
-    data.data.forEach((item, index) => index < 3 && hotArticleList.push(item));
+    data.forEach((item, index) => index < 3 && hotArticleList.push(item));
   })
-  .catch((err) => {});
 
 axios
   .get("/get/visitor")
   .then(({ data }) => {
-    data.data.forEach((item, index) => index < 12 && visitorList.push(item));
+    data.forEach((item, index) => index < 12 && visitorList.push(item));
   })
-  .catch((err) => {});
-
 // let ifFixed = ref(false);
 // const scrollFn = () => {
 //   const scrollTop =

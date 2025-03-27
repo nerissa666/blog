@@ -92,17 +92,14 @@ const onSubmit = () => {
         .post("/adminServer/link/add", {
           ...values
         })
-        .then(({ data }) => {
-          if (data.code === 0) {
-            message.success(data.msg);
+        .then(({ code, msg }) => {
+          if (code === 0) {
+            message.success(msg);
             formRef.value.resetFields();
           } else {
-            message.error(data.msg);
+            message.error(msg);
           }
         })
-        .catch((error) => {
-          message.error("Network Error: Please try again later.");
-        });
     })
     .catch((error) => {
     });

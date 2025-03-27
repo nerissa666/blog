@@ -64,11 +64,10 @@ const dataList = reactive([
 axios
   .get("/get/article")
   .then(({ data }) => {
-    data.data.forEach((item, index) => {
+    data.forEach((item, index) => {
       dataList.push(item);
     });
   })
-  .catch((err) => {});
 const router = useRouter();
 const offHandlePreview = (articleId) => {
   router.push("/article/" + articleId);

@@ -141,12 +141,10 @@ const clickEmoji = (item) => {
 const commentTreeRef = ref(null);
 const onSubmit = async () => {
   // message/submit
-  axios.post("/msg/submit", {val: formState.words}).then(async ({data: {msg}}) => {
+  axios.post("/msg/submit", {val: formState.words}).then(async ({msg}) => {
     message.success(msg);
     formState.words = "";
     await commentTreeRef.value.getComment();
-  }).catch((err) => {
-    message.error(err.msg);
   });
 };
 

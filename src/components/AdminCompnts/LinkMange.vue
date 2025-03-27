@@ -1,11 +1,6 @@
 <template>
   <div class="">
-    <a-table
-      :columns="columns"
-      :data-source="dataSource"
-      bordered
-      size="small"
-    >
+    <a-table :columns="columns" :data-source="dataSource" bordered size="small">
       <template #bodyCell="{ column, text, record }">
         <template v-if="['name', 'home', 'des'].includes(column.dataIndex)">
           <div>
@@ -127,18 +122,23 @@ const editableData = reactive({});
 const coverList = ref([]);
 const imageUrl = ref("");
 const loading = ref(false);
-axios.get("/get/link").then(({ data }) => {
-  dataSource.value = data.data;
-});
+const getLink = () => {
+  axios.get("/get/link").then(({ data }) => {
+    dataSource.value = data;
+  });
+};
+getLink()
 const edit = (_id) => {
   editableData[_id] = cloneDeep(
     dataSource.value.filter((item) => _id === item._id)[0]
   );
 };
+
 const save = (record) => {
-  axios.post("/adminServer/link/update", record).then(({ data }) => {
-    if (data.code === 0) {
-      message.success(data.msg);
+  axios.post("/adminServer/link/update", record).then(({ code, msg }) => {
+    if (code === 0) {
+      message.success(msg);
+      getLink();
     }
   });
   delete editableData[record._id];
@@ -147,9 +147,9 @@ const cancel = (_id) => {
   delete editableData[_id];
 };
 const delet = (_id) => {
-  axios.delete("/adminServer/link/delete", { _id }).then(({ data }) => {
-    if (data.code === 0) {
-      message.success(data.msg);
+  axios.delete("/adminServer/link/delete", { _id }).then(({ code, msg }) => {
+    if (code === 0) {
+      message.success(msg);
     }
   });
   dataSource.value = dataSource.value.filter((item) => _id !== item._id);
@@ -165,7 +165,6 @@ const coverBeforeUpload = (file) => {
   }
   return isJpgOrPng && isLt2M;
 };
-
 </script>
 
 <style scoped lang="scss">

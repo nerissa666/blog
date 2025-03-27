@@ -96,7 +96,7 @@ const dataSource = ref([
   // },
 ]);
 axios.get("/adminServer/contact").then(({ data }) => {
-  dataSource.value = data.data;
+  dataSource.value = data;
 });
 const handleChange = ({  read, _id: id }) => {
   axios
@@ -104,9 +104,9 @@ const handleChange = ({  read, _id: id }) => {
       id,
       read,
     })
-    .then(({ data }) => {
-      if (data.code === 0) {
-        message.success(data.msg);
+    .then(({ code, msg }) => {
+      if (code === 0) {
+        message.success(msg);
       }
     });
 };

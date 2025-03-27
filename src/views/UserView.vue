@@ -206,16 +206,16 @@ const onFinish = () => {
           .post("/personal/user", {
             user: values.newName,
           })
-          .then(({ data }) => {
-            message.success(data.msg);
+          .then(({ msg }) => {
+            message.success(msg);
           }),
         axios
           .post("/personal/pass", {
             oldPass: values.passWord,
             pass: values.newPassWord,
           })
-          .then(({ data }) => {
-            message.success(data.msg);
+          .then(({ msg }) => {
+            message.success(msg);
           }),
       ]).then(() => {
         store.commit("setInfoLogin", {});

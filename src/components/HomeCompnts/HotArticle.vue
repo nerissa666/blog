@@ -73,9 +73,8 @@ const hotArticleList = reactive([
 axios
   .get("/get/article")
   .then(({ data }) => {
-    data.data.forEach((item, index) => index < 3 && hotArticleList.push(item));
+    data.forEach((item, index) => index < 3 && hotArticleList.push(item));
   })
-  .catch((err) => {});
 </script>
 
 <style scoped lang="scss">

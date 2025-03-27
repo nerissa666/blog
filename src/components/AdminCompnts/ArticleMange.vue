@@ -186,10 +186,10 @@ const columns = [
   },
 ];
 const dataSource = ref([]);
-const editableData = reactive({});
+let editableData = reactive({});
 const getArticle = () => {
   axios.get("/get/article").then(({ data }) => {
-    dataSource.value = data.data;
+    dataSource.value = data;
   });
 };
 getArticle();
@@ -203,8 +203,8 @@ const delet = ({ _id: id }) => {
     data: {
       id,
     },
-  }).then(({ data }) => {
-    message.success(data.msg);
+  }).then(({ msg }) => {
+    message.success(msg);
     getArticle();
   });
 };
@@ -217,6 +217,7 @@ const closeTag = (tags, tag) => {
 };
 const value = ref("");
 const onSearch = (searchValue) => {
+  editableData = {} // reactive 直接修改 ref 使用.value修改
   const valReg = new RegExp(".*" + value.value + ".*");
   const tempData = [];
   
@@ -262,11 +263,11 @@ const save = (record) => {
             "Content-Type": "multipart/form-data",
           },
         })
-        .then(({ data }) => {
+        .then(({ url }) => {
           item.onSuccess();
           tempData[record._id] = {
             ...tempData[record._id],
-            [item.action.split("/").pop()]: data.url,
+            [item.action.split("/").pop()]: url,
           };
         })
     );
@@ -277,8 +278,8 @@ const save = (record) => {
         id: record._id,
         doc: { ...tempData[record._id], des: record.des, title: record.title },
       })
-      .then(({ data }) => {
-        message.success(data.msg);
+      .then(({ msg }) => {
+        message.success(msg);
         delete editableData[record._id];
         getArticle();
         // tempOptions[record._id] = [];

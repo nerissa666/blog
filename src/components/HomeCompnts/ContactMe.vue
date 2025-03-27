@@ -91,13 +91,10 @@ const formState = reactive({
   },
 });
 const onFinish = (values) => {
-  axios.post("/contact", values.user).then(({data}) => {
-    message.success(data.msg);
+  axios.post("/contact", values.user).then(({msg}) => {
+    message.success(msg);
     formRef.value.resetFields();
-  }).catch(({data}) => {
-    message.error(data.msg);
-
-  });
+  })
     
 };
 import { PlusOutlined, LoadingOutlined } from "@ant-design/icons-vue";

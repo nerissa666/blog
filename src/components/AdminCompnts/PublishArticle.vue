@@ -108,21 +108,21 @@ const onSubmit = () => {
               "Content-Type": "multipart/form-data",
             },
           })
-          .then(({ data }) => {
-            if (data.code === 0) {
+          // .then(({ code, url, msg }) => {
+          .then((...res) => {
+            console.log(res, "res");
+            const { code, url, msg } = res[0];
+            if (code === 0) {
               if (item.action.endsWith("md")) {
-                tempFileObj.md = data.url;
+                tempFileObj.md = url;
               } else {
-                tempFileObj.cover = data.url;
+                tempFileObj.cover = url;
               }
-              resolve(data);
+              resolve(res)
             } else {
-              message.error(data.msg);
-              reject(data);
+              message.error(msg);
+              reject(res)
             }
-          })
-          .catch((err) => {
-            reject(err);
           });
       })
     );
@@ -133,12 +133,13 @@ const onSubmit = () => {
         ...formArticle,
         ...tempFileObj,
       })
-      .then(({ data }) => {
-        if (data.code === 0) {
-          message.success(data.msg);
-          router.push("/article/" + data.data.id);
+      .then((...res) => {
+        const { code, msg, data:{id} } = res[0]
+        if (code === 0) {
+          message.success(msg);
+          router.push("/article/" + id);
         } else {
-          message.error(data.msg);
+          message.error(msg);
         }
       });
   });
@@ -152,8 +153,7 @@ const handleChange = (info) => {
     message.error(`${info.file.name} file upload failed.`);
   }
 };
-function handleDrop(e) {
-}
+function handleDrop(e) {}
 </script>
 
 <style scoped lang="scss"></style>
