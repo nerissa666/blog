@@ -131,7 +131,7 @@ const { setInfoLogin } = mapMutations(store, ["setInfoLogin"]);
 const LoginFinish = (values) => {
   axios.post("/login", values).then(({ data, code, msg }) => {
     if (code === 0) {
-      message.success(data.msg);
+      message.success(msg);
       visible.value = false;
       localStorage.setItem("loginInfo", JSON.stringify(data));
       store.commit("setInfoLogin", data);
