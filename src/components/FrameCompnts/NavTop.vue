@@ -54,6 +54,7 @@ import LoginModal from "./LoginModal.vue";
 import { useStore, mapState, mapGetters } from "vuex";
 const store = useStore();
 const isAdmin = ref(store.getters.isAdmin);
+console.log(isAdmin.value, 'isAdmin');
 const tempInfo = JSON.parse(localStorage.getItem("loginInfo")) || {};
 store.commit("setInfoLogin", tempInfo);
 const loginInfo = reactive(store.state.infoLogin);

@@ -9,7 +9,7 @@ import './assets/css/font.css'
 import "./assets/font/iconfont.css";
 import './assets/css/reset.css'
 import axios from 'axios';
-const baseURL = 'http://localhost:4001'
+const baseURL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4001';
 //配置全局axios
 axios.defaults.baseURL = baseURL //配置前缀url
 axios.defaults.withCredentials = true //携带cookie
