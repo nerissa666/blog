@@ -13,8 +13,6 @@ axios.interceptors.request.use((config) => {
 
 //响应拦截
 axios.interceptors.response.use(({data}) => {
-    console.log(data, 'configresponse')
-    console.log(axios, 'axios')
     return data
 }, (error) => {
     return Promise.reject(error)

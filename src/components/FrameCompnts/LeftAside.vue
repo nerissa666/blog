@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ fixed: false, left_side: true }">
+  <div :class="{ left_side: true }">
     <div class="personal_info">
       <div class="top_info">
         <div class="avatar">
@@ -45,55 +45,66 @@
         </a>
       </div>
     </div>
-    <div class="hot_article">
-      <h4>Hot Articles</h4>
-      <a-list item-layout="horizontal" :data-source="hotArticleList">
-        <template #renderItem="{ item, index }">
-          <a-list-item>
-            <a-list-item-meta description="">
-              <template #title>
-                <a :href="'/article/' + item._id" >{{
-                  item.title
-                }}</a>
-              </template>
-              <template #avatar>
-                <span class="order">{{ ++index }}</span>
-              </template>
-            </a-list-item-meta>
-          </a-list-item>
-        </template>
-      </a-list>
-    </div>
-    <div class="recent_visitor">
-      <h4>最近访客</h4>
-      <a-list
-        :grid="{ gutter: 6, column: 4 }"
-        :data-source="visitorList"
-        size="small"
-      >
-        <template #renderItem="{ item }">
-          <a-list-item>
-            <a-card :title="item.visitor.user">
-              <a-image width="100%" height="100%" :src="item.visitor.photo" />
-              <!-- <img
+    <div :class="['fakewrapper', { fixed: ifFixed }]">
+      <div class="hot_article">
+        <!-- <div :class="['hot_article', 'fixed']"> -->
+        <h4>Hot Articles</h4>
+        <a-list item-layout="horizontal" :data-source="hotArticleList">
+          <template #renderItem="{ item, index }">
+            <a-list-item>
+              <a-list-item-meta :description="item.description">
+                <template #title>
+                  <a :href="'/article/' + item._id">{{ item.title }}</a>
+                </template>
+                <template #avatar>
+                  <span class="order">{{ index + 1 }}</span>
+                </template>
+              </a-list-item-meta>
+            </a-list-item>
+          </template>
+        </a-list>
+      </div>
+      <div class="recent_visitor">
+        <h4>最近访客</h4>
+        <a-list
+          :grid="{ gutter: 6, column: 4 }"
+          :data-source="visitorList"
+          size="small"
+        >
+          <template #renderItem="{ item }">
+            <a-list-item>
+              <a-card :title="item.visitor.user">
+                <a-image width="100%" height="100%" :src="item.visitor.photo" />
+                <!-- <img
                 :src="item.avatar"
                 :title="item.description"
                 width="100%"
                 height="100%"
             /> -->
-            </a-card>
-          </a-list-item>
-        </template>
-      </a-list>
+              </a-card>
+            </a-list-item>
+          </template>
+        </a-list>
+      </div>
     </div>
   </div>
 </template>
 <script setup>
-import { reactive, ref, defineEmits } from "vue";
+import { reactive, ref, defineEmits, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { DownloadOutlined } from "@ant-design/icons-vue";
 import axios from "axios";
 const router = useRouter();
+let ifFixed = ref(false);
+const scrollFn = () => {
+  let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  ifFixed.value = scrollTop >= 235;
+};
+scrollFn();
+window.addEventListener("scroll", () => {
+  scrollFn();
+});
+
 const socialList = reactive([
   {
     icon: "&#xe632;",
@@ -205,17 +216,13 @@ const visitorList = reactive([
   //   description: "This is description",
   // },
 ]);
-axios
-  .get("/get/article")
-  .then(({ data }) => {
-    data.forEach((item, index) => index < 3 && hotArticleList.push(item));
-  })
+axios.get("/get/article").then(({ data }) => {
+  data.forEach((item, index) => index < 3 && hotArticleList.push(item));
+});
 
-axios
-  .get("/get/visitor")
-  .then(({ data }) => {
-    data.forEach((item, index) => index < 12 && visitorList.push(item));
-  })
+axios.get("/get/visitor").then(({ data }) => {
+  data.forEach((item, index) => index < 12 && visitorList.push(item));
+});
 // let ifFixed = ref(false);
 // const scrollFn = () => {
 //   const scrollTop =
@@ -231,20 +238,29 @@ const handleClick = (id) => {
 };
 </script>
 <style scoped lang="scss">
-.fixed {
+div.fixed {
   position: fixed;
-  top: -22%;
-  left: 2%;
+  top: 80px;
+  width: 28.7%;
+  padding: 6%;
 }
+// @media screen and (max-width: 1024px) {
+//   div.fixed {
+//     top: 14%;
+//     width: 28.7%;
+//     padding: 6%;
+//   }
+// }
+
 .left_side {
   text-align: center;
 
-  > div {
+  > div, .fakewrapper>div {
     box-shadow: 0 0 4px #ddd;
     margin-bottom: 5%;
     background-color: #fff;
   }
-  > div:not(:first-child) {
+  > div:not(:first-child) ,div.fakewrapper>div{
     padding: 6%;
     text-align: left;
     h4 {
@@ -409,5 +425,14 @@ h3 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+div.fakewrapper {
+  padding: 0 !important;
+  background-color: transparent !important;
+  > div {
+    border: none;
+    padding: 6%;
+  }
+
 }
 </style>

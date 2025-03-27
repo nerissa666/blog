@@ -9,7 +9,7 @@
       <nav-top />
     </nav>
     <main>
-      <left-aside />
+      <left-aside   />
       <div class="right-aside">
         <router-view />
       </div>
@@ -23,13 +23,34 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import NavTop from "@/components/FrameCompnts/NavTop.vue";
 import LeftAside from "@/components/FrameCompnts/LeftAside.vue";
-import { reactive } from "vue";
+
+import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
 const store = useStore();
 store.commit("setInfoLogin", JSON.parse(localStorage.getItem("loginInfo")) || {});
 
 </script>
 <style lang="scss">
+::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width: 5px; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: red;
+}
+
+::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background: #ededed;
+}
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
