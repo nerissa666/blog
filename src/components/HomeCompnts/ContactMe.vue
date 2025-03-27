@@ -5,6 +5,7 @@
     <a-form
       :model="formState"
       v-bind="layout"
+      ref="formRef"
       name="nest-messages"
       @finish="onFinish"
     >
@@ -65,6 +66,7 @@ const layout = {
   wrapperCol: { span: 14 },
 };
 
+const formRef = ref()
 const validateMessages = {
   required: "${label} is required!",
   types: {
@@ -91,6 +93,7 @@ const formState = reactive({
 const onFinish = (values) => {
   axios.post("/contact", values.user).then(({data}) => {
     message.success(data.msg);
+    formRef.value.resetFields();
   }).catch(({data}) => {
     message.error(data.msg);
 
