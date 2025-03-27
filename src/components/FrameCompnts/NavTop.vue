@@ -128,7 +128,7 @@ const logout = () => {
     letter-spacing: 0.2rem;
     font-family: Pacifico;
     color: rgba(0, 0, 0, 0.7);
-    transform: translateY(-25%);
+    // transform: translateY(-25%);
   }
   .ant-tabs {
     flex: 1;

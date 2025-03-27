@@ -20,6 +20,7 @@
 
           服务器：<a href="https://activity.huaweicloud.com/" target="_blank">华为云</a><br />
         </p>
+        支持ipad mini 及以上屏幕 目前还没做适配phone，后续会review～
         这个博客我在2021年就开始构思了，终于要在2025年上线了！我真棒！😂
         这不能怪我...真的...每当我好不容易挤点时间写好代码准备上线时，总有前端技术在这个时间点做大的更新...React、Node、Vue、Nuxt...我也很绝望啊，每次都是推翻重写，裂开...
       </article>
