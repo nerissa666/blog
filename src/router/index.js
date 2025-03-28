@@ -42,11 +42,7 @@ const routes = [
       }
     },
     component: () => {
-      if (!store.getters.isAdmin) {
-        
-      } else {
-        return import(/* webpackChunkName: "about" */ '../views/AdminView.vue')
-      }
+      return import(/* webpackChunkName: "about" */ '../views/AdminView.vue')
     }
   },
   {
@@ -69,7 +65,7 @@ const routes = [
     path: '/403',
     name: '403',
     component: () => import(/* webpackChunkName: "about" */ '../views/NoPermission.vue')
-  },{
+  }, {
     path: '/500',
     name: '500',
     component: () => import(/* webpackChunkName: "about" */ '../views/ServerError.vue')

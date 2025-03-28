@@ -34,18 +34,7 @@ import {
   reactive,
   onMounted,
   defineExpose,
- 
-  watch,
-  computed,
- 
 } from "vue";
-
-import store from "@/store";
-
-
-watch(store.state.infoLogin, () => {
-  user = computed(() => store.getters.user);
-});
 
 const rootComment = reactive([
   // {

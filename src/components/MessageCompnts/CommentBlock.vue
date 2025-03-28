@@ -34,13 +34,13 @@
           <i
             class="iconfont icon-huifu"
             @click.stop="
-              () => (rootComment.openPanel = !rootComment?.openPanel)
+              () => (openPanel = !openPanel)
             "
           />
           <div
             :class="[
               'action_comment',
-              rootComment?.openPanel ? 'open_panel' : 'close_panel',
+              openPanel ? 'open_panel' : 'close_panel',
             ]"
           >
             <InputPanel
@@ -72,6 +72,7 @@ let user = ref(store.getters.user);
 watch(store.state.infoLogin, () => {
   user = computed(() => store.getters.user);
 });
+const openPanel = ref(false)
 const CancelToken = axios.CancelToken;
 const props = defineProps({
   background: {
