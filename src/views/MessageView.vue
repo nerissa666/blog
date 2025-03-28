@@ -3,7 +3,8 @@
     <div>
       <h2>留言板</h2>
       <article>请文明发言，禁止广告。不然拉黑了嗷\(^o^)/~</article>
-      <a-form :model="formState" @submit="onSubmit">
+      <InputPanel @getComment="commentTreeRef.getComment()" />
+      <!-- <a-form :model="formState" @submit="onSubmit">
         <a-form-item>
           <a-textarea
             v-model:value="formState.words"
@@ -22,7 +23,7 @@
             >
           </div>
         </a-form-item>
-      </a-form>
+      </a-form> -->
     </div>
     <CommenTree ref="commentTreeRef" />
   </div>
@@ -32,11 +33,12 @@ import { reactive, ref, useRef } from "vue";
 import axios from "axios";
 import EMojiPanel from "@/components/MessageCompnts/EMojiPanel.vue";
 import CommenTree from "@/components/MessageCompnts/CommenTree.vue";
+import InputPanel from "@/components/MessageCompnts/InputPanel.vue";
 import { message } from "ant-design-vue";
 const formState = reactive({
   words: "",
 });
-
+const CancelToken = axios.CancelToken;
 const emoji = reactive([
   "😀",
   "😁",
@@ -139,13 +141,21 @@ const clickEmoji = (item) => {
   formState.words += item;
 };
 const commentTreeRef = ref(null);
-const onSubmit = async () => {
+const onSubmit = () => {
   // message/submit
-  axios.post("/msg/submit", {val: formState.words}).then(async ({msg}) => {
-    message.success(msg);
-    formState.words = "";
-    await commentTreeRef.value.getComment();
-  });
+  axios
+    .post(
+      "/msg/submit",
+      { val: formState.words },
+      {
+        cancelToken: new CancelToken((c) => {}),
+      }
+    )
+    .then(({ code, message: msg, name }) => {
+      if (code === "ERR_CANCELED") return;
+      formState.words = "";
+      commentTreeRef.value.getComment();
+    });
 };
 
 const ifShowEmoji = ref(false);
@@ -195,9 +205,10 @@ const showEmoji = () => {
     width: 40%;
     text-align: left;
   }
+
 }
 :deep(.ant-popover) {
-  width: 100%;
+  width: 90%;
 }
 h3 {
   margin: 40px 0 0;

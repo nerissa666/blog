@@ -129,26 +129,20 @@ const store = useStore();
 const { infoLogin } = mapState(store, ["infoLogin"]);
 const { setInfoLogin } = mapMutations(store, ["setInfoLogin"]);
 const LoginFinish = (values) => {
-  axios.post("/login", values).then(({ data, code, msg }) => {
+  axios.post("/login", values).then(({ data, code }) => {
     if (code === 0) {
-      message.success(msg);
       visible.value = false;
       localStorage.setItem("loginInfo", JSON.stringify(data));
       store.commit("setInfoLogin", data);
       emit("update:modal2Visible", visible.value);
       emit("update:isLogin", data);
-    } else {
-      message.error(msg);
     }
   });
 };
 const RegistFinish = (values) => {
-  axios.post("/reg", values).then(({ data, code, msg }) => {
+  axios.post("/reg", values).then(({ code }) => {
     if (code === 0) {
-      message.success(msg);
       activeKey.value = "login";
-    } else {
-      message.error(msg);
     }
   });
 };

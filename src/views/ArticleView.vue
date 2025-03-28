@@ -64,9 +64,8 @@ const dataList = reactive([
 axios
   .get("/get/article")
   .then(({ data }) => {
-    data.forEach((item, index) => {
-      dataList.push(item);
-    });
+    data.forEach((item) => 
+      dataList.push(item));
   })
 const router = useRouter();
 const offHandlePreview = (articleId) => {

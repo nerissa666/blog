@@ -17,7 +17,7 @@
       </article>
     </div>
     <div class="svg_block">
-      <a :href="item.home" v-for="item in linkList" target="_blank" :key="item.name">
+      <a :href="item.home" v-for="item in linkList" target="_blank" :key="item.home">
         <svg
           viewBox="0 0 300 100"
           preserveAspectRatio="none"

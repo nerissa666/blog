@@ -65,7 +65,7 @@ const layout = {
   labelCol: { span: 5 },
   wrapperCol: { span: 14 },
 };
-
+const CancelToken = axios.CancelToken;
 const formRef = ref()
 const validateMessages = {
   required: "${label} is required!",
@@ -91,10 +91,12 @@ const formState = reactive({
   },
 });
 const onFinish = (values) => {
-  axios.post("/contact", values.user).then(({msg}) => {
-    message.success(msg);
-    formRef.value.resetFields();
-  })
+  let cancel;
+  axios.post("/contact", values.user, {
+    cancelToken: new CancelToken(c => cancel = c)
+  }).then(({code,message:msg,name}) => {
+    if (code === "ERR_CANCELED") return
+    formRef.value.resetFields()})
     
 };
 import { PlusOutlined, LoadingOutlined } from "@ant-design/icons-vue";

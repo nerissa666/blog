@@ -216,11 +216,11 @@ const visitorList = reactive([
   //   description: "This is description",
   // },
 ]);
-axios.get("/get/article").then(({ data }) => {
+axios.get("/get/article").then(({data}) => {
   data.forEach((item, index) => index < 3 && hotArticleList.push(item));
 });
 
-axios.get("/get/visitor").then(({ data }) => {
+axios.get("/get/visitor").then(({data}) => {
   data.forEach((item, index) => index < 12 && visitorList.push(item));
 });
 // let ifFixed = ref(false);

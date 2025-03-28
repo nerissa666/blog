@@ -143,14 +143,13 @@
 </template>
 
 <script setup>
-
 import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
 import { message } from "ant-design-vue";
 import request from "umi-request";
 import axios from "axios";
 import { useStore } from "vuex";
-import { UploadOutlined, PlusOutlined } from '@ant-design/icons-vue';
+import { UploadOutlined, PlusOutlined } from "@ant-design/icons-vue";
 const store = useStore();
 const baseURL = store.state.baseURL;
 const columns = [
@@ -188,9 +187,7 @@ const columns = [
 const dataSource = ref([]);
 let editableData = reactive({});
 const getArticle = () => {
-  axios.get("/get/article").then(({ data }) => {
-    dataSource.value = data;
-  });
+  axios.get("/get/article").then(({data}) => dataSource.value = data);
 };
 getArticle();
 const edit = (_id) => {
@@ -199,14 +196,13 @@ const edit = (_id) => {
   );
 };
 const delet = ({ _id: id }) => {
-  axios.delete("/adminServer/article/delete", {
-    data: {
-      id,
-    },
-  }).then(({ msg }) => {
-    message.success(msg);
-    getArticle();
-  });
+  axios
+    .delete("/adminServer/article/delete", {
+      data: {
+        id,
+      },
+    })
+    .then(() => getArticle());
 };
 
 const cancel = (_id) => {
@@ -217,10 +213,10 @@ const closeTag = (tags, tag) => {
 };
 const value = ref("");
 const onSearch = (searchValue) => {
-  editableData = {} // reactive 直接修改 ref 使用.value修改
+  editableData = {}; // reactive 直接修改 ref 使用.value修改
   const valReg = new RegExp(".*" + value.value + ".*");
   const tempData = [];
-  
+
   dataSource.value.filter((item) => {
     for (const val in item) {
       if (typeof item[val] !== "object") {
@@ -237,7 +233,7 @@ const onSearch = (searchValue) => {
   dataSource.value = tempData;
 };
 const handleClear = () => {
-  if (!value.value) return (getArticle());
+  if (!value.value) return getArticle();
 };
 let tempOptions = {};
 const handleCustomRequest = (options, record) => {
@@ -278,8 +274,7 @@ const save = (record) => {
         id: record._id,
         doc: { ...tempData[record._id], des: record.des, title: record.title },
       })
-      .then(({ msg }) => {
-        message.success(msg);
+      .then(() => {
         delete editableData[record._id];
         getArticle();
         // tempOptions[record._id] = [];

@@ -9,9 +9,10 @@ import { useRouter, useRoute } from "vue-router";
 const route = useRoute();
 
 onMounted(() => {
-  axios.get("/get/articleID?id=" + route.params.id).then(({ data: { md } }) => {
-    console.log(md, "md");
-    axios.get(md).then((data ) => {
+  axios.get("/get/articleID?id=" + route.params.id).then((...res) => {
+    console.log(res[0].data.md, 'res');
+    axios.get(res[0].data.md).then((data) => {
+      console.log(data, 'data');
       window.editormd.markdownToHTML("mdToHTML", {
         markdown: data,
         emoji: true,

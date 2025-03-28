@@ -27,3 +27,14 @@ I will continue review the code and make changes as needed. for example style re
 admin login not rerender nav list ；shortcut operation
 
 avatar img size
+
+axios rewrite to message unify
+utils distill
+ssl cert
+unlogin cancle request
+Batch Delete
+choose message
+publish article rerender hot article list
+and some Data driven view problems
+
+how to batch add cancle request in axios and into catch but not .then

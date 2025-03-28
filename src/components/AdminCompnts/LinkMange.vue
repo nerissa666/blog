@@ -85,8 +85,8 @@ const columns = [
   {
     title: "首页",
     dataIndex: "home",
-    width: 0.5, // Set a fixed width of 100 pixels without 'px'
-    resizable: true,
+    width: 2, // Set a fixed width of 100 pixels without 'px'
+    resizable: true,    ellipsis: true,
   },
   {
     title: "logo",
@@ -123,9 +123,7 @@ const coverList = ref([]);
 const imageUrl = ref("");
 const loading = ref(false);
 const getLink = () => {
-  axios.get("/get/link").then(({ data }) => {
-    dataSource.value = data;
-  });
+  axios.get("/get/link").then(({ data }) => dataSource.value = data);
 };
 getLink()
 const edit = (_id) => {
@@ -135,11 +133,8 @@ const edit = (_id) => {
 };
 
 const save = (record) => {
-  axios.post("/adminServer/link/update", record).then(({ code, msg }) => {
-    if (code === 0) {
-      message.success(msg);
-      getLink();
-    }
+  axios.post("/adminServer/link/update", record).then(({ code }) => {
+    if (code === 0) getLink()
   });
   delete editableData[record._id];
 };
@@ -147,12 +142,9 @@ const cancel = (_id) => {
   delete editableData[_id];
 };
 const delet = (_id) => {
-  axios.delete("/adminServer/link/delete", { _id }).then(({ code, msg }) => {
-    if (code === 0) {
-      message.success(msg);
-    }
+  axios.delete("/adminServer/link/delete", { _id }).then(() => {
+    dataSource.value = dataSource.value.filter((item) => _id !== item._id);
   });
-  dataSource.value = dataSource.value.filter((item) => _id !== item._id);
 };
 const coverBeforeUpload = (file) => {
   const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";

@@ -1,6 +1,6 @@
 <template>
   <div class="table-container">
-    <a-table bordered :data-source="dataSource" :columns="columns" size="small">
+    <a-table bordered :data-source="dataSource"  :columns="columns" size="small">
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'wechat'">
           <a-image width="100%" :src="record.wechat" />
@@ -10,6 +10,9 @@
             v-model:checked="record.read"
             @change="() => handleChange(record)"
           />
+        </template>
+        <template v-else-if="column.dataIndex === 'date'">
+          {{ formatDate(text).split(" ")[0].replace(/\//g, "-") }}
         </template>
         <template v-else>
           {{ text || " " }}
@@ -23,11 +26,17 @@
 import { ref } from "vue";
 import axios from "axios";
 import { message } from "ant-design-vue";
+import { formatDate } from "@/utils";
 const columns = [
   {
     title: "日期",
     dataIndex: "date",
     width: 1,
+    // customRender: ({ text }) => {
+    //   console.log(text, 'text')
+    //   console.log(formatDate(text), 'formatDate(text)')
+    //   return formatDate(text)
+    // },
   },
   {
     title: "Name",
@@ -38,6 +47,8 @@ const columns = [
     title: "Email",
     dataIndex: "email",
     width: 1,
+    ellipsis: true,
+    showSorterTooltip: true,
   },
   {
     title: "Subject",
@@ -95,20 +106,12 @@ const dataSource = ref([
   //   checked: true,
   // },
 ]);
-axios.get("/adminServer/contact").then(({ data }) => {
-  dataSource.value = data;
-});
-const handleChange = ({  read, _id: id }) => {
-  axios
-    .post("/adminServer/contact/read", {
-      id,
-      read,
-    })
-    .then(({ code, msg }) => {
-      if (code === 0) {
-        message.success(msg);
-      }
-    });
+axios.get("/adminServer/contact").then(({ data }) => (dataSource.value = data));
+const handleChange = ({ read, _id: id }) => {
+  axios.post("/adminServer/contact/read", {
+    id,
+    read,
+  });
 };
 </script>
 <style scoped lang="scss">

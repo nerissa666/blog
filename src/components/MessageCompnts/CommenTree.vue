@@ -1,158 +1,35 @@
 <template>
   <div class="">
-    <a-comment class="root_comment" v-for="item in rootComment" :key="item._id">
-      <template #author>
-        <a>{{ item.author.user }}</a>
-      </template>
-      <template #avatar>
-        <a-avatar :src="item.author.photo" :alt="item.author.user" />
-      </template>
-      <template #content>
-        <p>
-          {{ item.text }}
-        </p>
-        <div class="action_hobby">
-          <i
-            class="iconfont icon-xinaixin"
-            :class="item.likes.includes(user) && 'like'"
-            @click.stop="() => handleLike(item, true)"
-          />
-          <span>{{ item.likes.length }}</span>
-          <i
-            class="iconfont icon-huifu"
-            @click.stop="() => (item.openPanel = !item?.openPanel)"
-          />
-          <div
-            :class="[
-              'action_comment',
-              item?.openPanel ? 'open_panel' : 'close_panel',
-            ]"
-          >
-            <a-form :model="item" @submit="() => onSubmit(item)">
-              <a-textarea :maxlength="100" v-model:value="item.val" />
-              <a-button type="primary" size="small" html-type="submit"
-                >发送</a-button
-              ></a-form
-            >
-          </div>
-        </div>
-      </template>
-      <template #datetime>
-        <a-tooltip :title="item.date">
-          <span>{{ formatDate(item.date) }}</span>
-        </a-tooltip>
-      </template>
-      <a-comment
-        class="child_comment"
-        v-for="(child, index) in item.children"
+    <CommentBlock
+      v-for="item in rootComment"
+      :key="item._id"
+      :rootComment="item"
+      :root="true"
+      :background="{}"
+      @getComment="getComment"
+    >
+      <CommentBlock
+        v-for="(child,index) in item.children"
         :key="child._id"
+        :rootComment="child"
+        @getComment="getComment"
+        :background="{ cIndex:index, pID: item._id }"
       >
-        <template #actions v-if="child?.replyUser">
-          <span>Reply to: {{ child.replyUser.user }}</span>
-        </template>
-        <template #author>
-          <a>{{ child.author.user }}</a>
-        </template>
-        <template #avatar>
-          <a-avatar :src="child.author.photo" :alt="child.author.photo" />
-        </template>
-        <template #content>
-          <p>
-            {{ child.text }}
-          </p>
-          <div class="action_hobby">
-            <i
-              class="iconfont icon-xinaixin"
-              :class="child.likes.includes(user) && 'like'"
-              @click.stop="
-                () =>
-                  handleLike({ cIndex: index, cID: child._id, pID: item._id })
-              "
-            />
-            <span>{{ child.likes.length }}</span>
-            <i
-              class="iconfont icon-huifu"
-              @click.stop="() => (child.openPanel = !child?.openPanel)"
-            />
-            <div
-              :class="[
-                'action_comment',
-                child?.openPanel ? 'open_panel' : 'close_panel',
-              ]"
-            >
-              <a-form :model="child" @submit="() => onSubmit(child, item._id)">
-                <a-textarea :maxlength="100" v-model:value="child.val" />
-                <a-button type="primary" size="small" html-type="submit"
-                  >发送</a-button
-                ></a-form
-              >
-            </div>
-          </div>
-        </template>
-        <template #datetime>
-          <a-tooltip :title="child.date">
-            <span>{{ formatDate(child.date) }}</span>
-          </a-tooltip>
-        </template>
-        <a-comment
-          v-for="grandSon in child?.childrens"
-          :key="grandSon.commentId"
+        <!-- <CommentBlock
+          v-for="grandSon in child.children"
+          :key="grandSon._id"
+          :rootComment="grandSon"
+          @getComment="getComment"
         >
-          <template #actions v-if="grandSon?.replyTo">
-            <span>Reply to: {{ grandSon.replyTo }}</span>
-          </template>
-          <template #author>
-            <a>{{ grandSon.author }}</a>
-          </template>
-          <template #avatar>
-            <a-avatar :src="grandSon.avatar" :alt="grandSon.author" />
-          </template>
-          <template #content>
-            <p>
-              {{ grandSon.content }}
-            </p>
-            <div class="action_hobby">
-              <i
-                class="iconfont icon-xinaixin"
-                :class="grandSon.likeList.includes(user) && 'like'"
-                @click.stop="() => handleLike(cIndex, grandSon, item._id)"
-              />
-              <span>{{ grandSon.likeList.length }}</span>
-              <i
-                class="iconfont icon-huifu"
-                @click.stop="() => (grandSon.openPanel = !grandSon?.openPanel)"
-              />
-              <div
-                :class="[
-                  'action_comment',
-                  grandSon.openPanel ? 'open_panel' : 'close_panel',
-                ]"
-              >
-                <a-form
-                  :model="grandSon"
-                  @submit="() => onSubmit(grandSon, item._id)"
-                >
-                  <a-textarea :maxlength="100" v-model:value="grandSon.val" />
-                  <a-button type="primary" size="small" html-type="submit"
-                    >发送</a-button
-                  >
-                </a-form>
-              </div>
-            </div>
-          </template>
-          <template #datetime>
-            <a-tooltip :title="grandSon.date">
-              <span>{{ formatDate(grandSon.date) }}</span>
-            </a-tooltip>
-          </template>
-        </a-comment>
-      </a-comment>
-    </a-comment>
-  </div>
+        </CommentBlock> -->
+      </CommentBlock>
+    </CommentBlock>
+     </div>
 </template>
 
 <script setup>
 import axios from "axios";
+import CommentBlock from "./CommentBlock.vue";
 import {
   reactive,
   onMounted,
@@ -163,13 +40,14 @@ import {
   computed,
   ref,
 } from "vue";
-import { message } from "ant-design-vue";
+
 import store from "@/store";
-let user = ref(store.getters.user);
+
 
 watch(store.state.infoLogin, () => {
   user = computed(() => store.getters.user);
 });
+const CancelToken = axios.CancelToken;
 const rootComment = reactive([
   // {
   //   commentId: "1",
@@ -244,9 +122,7 @@ const rootComment = reactive([
 const getComment = () => {
   axios.get("/get/msg").then(({ data }) => {
     rootComment.length = 0;
-    data.forEach((item, index) => {
-      rootComment.push(item);
-    });
+    data.forEach((item) => rootComment.push(item));
   });
 };
 
@@ -257,98 +133,6 @@ onMounted(() => {
   getComment();
 });
 
-const handleLike = ({ _id: id, cID, pID, cIndex }, isParent = false) => {
-  isParent &&
-    axios
-      .post("/msg/like/parent", { id })
-      // .then(({ data: { msg } }) => {
-      .then(({ msg }) => {
-        message.success(msg);
-        getComment();
-      });
 
-  !isParent &&
-    axios
-      .post("/msg/like/child", {
-        cID,
-        cIndex,
-        pID,
-      })
-      // .then(({ data: { msg } }) => {
-      .then(({ msg }) => {
-        message.success(msg);
-        getComment();
-      });
-};
-
-const onSubmit = async ({ _id: id, author, val }, parentId) => {
-  axios
-    .post("/msg/reply/submit", {
-      id: parentId || id,
-      replyUser: author._id,
-      text: val,
-    })
-    .then(async ({ msg }) => {
-      message.success(msg);
-      getComment();
-    });
-};
-const formatDate = (date) => {
-  return new Date(date).toLocaleString();
-};
 </script>
 
-<style scoped lang="scss">
-.action_hobby {
-  margin: 10px 0;
-  letter-spacing: 5px;
-  span {
-    font-size: 12px;
-    color: #aaa;
-  }
-
-  i {
-    &:nth-of-type(2) {
-      margin-left: 20px;
-    }
-    cursor: pointer;
-    font-size: 14px;
-    color: #aaa;
-  }
-  i.like {
-    color: #f30606;
-  }
-}
-.action_comment {
-  overflow: hidden;
-  height: 0;
-  text-align: right;
-  .ant-input {
-    margin-bottom: 6px;
-  }
-}
-:deep(.ant-comment .ant-comment-content-author-name > a) {
-  color: #000;
-}
-.root_comment {
-  border-bottom: 1px dashed #ddd;
-}
-.child_comment {
-  border-bottom: 1px dotted #ddd;
-}
-.ant-comment-content-detail > p {
-  color: #666;
-  letter-spacing: 2px;
-  word-break: break-word;
-}
-:deep(.ant-comment .ant-comment-inner) {
-  padding: 0;
-  margin: 10px 0;
-}
-.open_panel {
-  height: auto;
-}
-.close_panel {
-  height: 0;
-}
-</style>

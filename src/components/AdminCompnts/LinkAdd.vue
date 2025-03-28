@@ -88,17 +88,14 @@ const onSubmit = () => {
   formRef.value
     .validate()
     .then((values) => {
+      console.log(values, 'values')
       axios
         .post("/adminServer/link/add", {
           ...values
         })
-        .then(({ code, msg }) => {
-          if (code === 0) {
-            message.success(msg);
-            formRef.value.resetFields();
-          } else {
-            message.error(msg);
-          }
+        .then(({ code }) => {
+          console.log(code, 'codeonSubmit')
+          if (code === 0) formRef.value.resetFields();
         })
     })
     .catch((error) => {

@@ -1,12 +1,12 @@
 <template>
-  <div class="">
+  <div class="emoji_panel">
     <a-popover
       placement="bottomLeft"
       trigger="click"
       :getPopupContainer="triggerNode"
       :arrow="true"
-      :destroyTooltipOnHide="true"
     >
+    <!-- :destroyTooltipOnHide="true" -->
       <template #content>
         <a-row class="emoji" :gutter="[0, 0]">
           <a-col
@@ -36,7 +36,10 @@ const triggerNode = (triggerNode) => {
 </script>
 
 <style scoped lang="scss">
-
+.emoji_panel {
+  width: 80%;
+  // position: relative;
+}
 .icon-biaoqing {
   font-size: 20px;
   cursor: pointer;
@@ -45,4 +48,5 @@ const triggerNode = (triggerNode) => {
 .ant-col {
   cursor: pointer;
 }
+
 </style>

@@ -111,7 +111,7 @@ const onSubmit = () => {
           // .then(({ code, url, msg }) => {
           .then((...res) => {
             console.log(res, "res");
-            const { code, url, msg } = res[0];
+            const { code, url } = res[0];
             if (code === 0) {
               if (item.action.endsWith("md")) {
                 tempFileObj.md = url;
@@ -120,7 +120,6 @@ const onSubmit = () => {
               }
               resolve(res)
             } else {
-              message.error(msg);
               reject(res)
             }
           });
@@ -134,13 +133,9 @@ const onSubmit = () => {
         ...tempFileObj,
       })
       .then((...res) => {
-        const { code, msg, data:{id} } = res[0]
-        if (code === 0) {
-          message.success(msg);
-          router.push("/article/" + id);
-        } else {
-          message.error(msg);
-        }
+        const { code, data:{id} } = res[0]
+        if (code === 0) 
+          router.push("/article/" + id)
       });
   });
 };
