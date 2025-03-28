@@ -223,19 +223,7 @@ axios.get("/get/article").then(({data}) => {
 axios.get("/get/visitor").then(({data}) => {
   data.forEach((item, index) => index < 12 && visitorList.push(item));
 });
-// let ifFixed = ref(false);
-// const scrollFn = () => {
-//   const scrollTop =
-//     document.documentElement.scrollTop || document.body.scrollTop;
-//   ifFixed = scrollTop >= 235;
-// };
-// mounted(() => {
-//   scrollFn()
-//   window.addEventListener("scroll", scrollFn);
-// });
-const handleClick = (id) => {
-  router.push(`/article/${id}`);
-};
+
 </script>
 <style scoped lang="scss">
 div.fixed {

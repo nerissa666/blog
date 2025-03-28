@@ -126,8 +126,6 @@ const rulesRegist = ref({
   ],
 });
 const store = useStore();
-const { infoLogin } = mapState(store, ["infoLogin"]);
-const { setInfoLogin } = mapMutations(store, ["setInfoLogin"]);
 const LoginFinish = (values) => {
   axios.post("/login", values).then(({ data, code }) => {
     if (code === 0) {

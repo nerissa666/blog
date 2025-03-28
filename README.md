@@ -38,3 +38,9 @@ publish article rerender hot article list
 and some Data driven view problems
 
 how to batch add cancle request in axios and into catch but not .then
+
+block upload file/cover fill form 
+
+把message变成单例
+axios 加一个是否需要message
+把大的text变成文件读取

@@ -149,7 +149,6 @@ import { message } from "ant-design-vue";
 import request from "umi-request";
 import axios from "axios";
 import { useStore } from "vuex";
-import { UploadOutlined, PlusOutlined } from "@ant-design/icons-vue";
 const store = useStore();
 const baseURL = store.state.baseURL;
 const columns = [
@@ -249,7 +248,7 @@ const handleCustomRequest = (options, record) => {
 const save = (record) => {
   const tempPromiseAll = [];
   const tempData = {};
-  tempOptions[record._id].forEach((item) => {
+  tempOptions[record._id]?.forEach((item) => {
     const formData = new FormData();
     formData.append("file", item.file);
     tempPromiseAll.push(

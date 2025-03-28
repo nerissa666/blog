@@ -34,7 +34,8 @@ axios.interceptors.request.use((config) => {
 })
 
 //响应拦截
-axios.interceptors.response.use(({ data }) => {
+axios.interceptors.response.use(({ data, config }) => {
+
     if (typeof data === 'object' && data !== null) {
         let code, msg, rest
         if (Array.isArray(data)) {
@@ -49,7 +50,9 @@ axios.interceptors.response.use(({ data }) => {
             rest = _rest
         }
         if (code === 0 && msg) {
-            message.success(msg)
+            if (['contact', 'msg','reg', 'adminServer'].includes(config.url.split('/')[1])) {
+                message.success(msg)
+            }
         } else {
             message.error(msg)
         }

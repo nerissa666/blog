@@ -99,7 +99,6 @@ const onFinish = (values) => {
     formRef.value.resetFields()})
     
 };
-import { PlusOutlined, LoadingOutlined } from "@ant-design/icons-vue";
 // import type { UploadChangeParam, UploadProps } from 'ant-design-vue';
 
 function getBase64(img, callback) {

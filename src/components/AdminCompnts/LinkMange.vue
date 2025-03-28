@@ -119,9 +119,7 @@ const columns = [
 // }
 const dataSource = ref([]);
 const editableData = reactive({});
-const coverList = ref([]);
-const imageUrl = ref("");
-const loading = ref(false);
+
 const getLink = () => {
   axios.get("/get/link").then(({ data }) => dataSource.value = data);
 };

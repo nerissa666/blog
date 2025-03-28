@@ -34,11 +34,10 @@ import {
   reactive,
   onMounted,
   defineExpose,
-  onUpdated,
-  onBeforeUpdate,
+ 
   watch,
   computed,
-  ref,
+ 
 } from "vue";
 
 import store from "@/store";
@@ -47,7 +46,7 @@ import store from "@/store";
 watch(store.state.infoLogin, () => {
   user = computed(() => store.getters.user);
 });
-const CancelToken = axios.CancelToken;
+
 const rootComment = reactive([
   // {
   //   commentId: "1",

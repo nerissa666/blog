@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import store from '@/store'
 const routes = [
   {
     path: '/',
@@ -7,7 +8,7 @@ const routes = [
     component: HomeView
   },
 
-  
+
   {
     path: '/message',
     name: 'Message',
@@ -33,8 +34,20 @@ const routes = [
   {
     path: '/admin',
     name: 'Admin',
-
-    component: () => import(/* webpackChunkName: "about" */ '../views/AdminView.vue')
+    beforeEnter: (to, from, next) => {
+      if (!store.getters.isAdmin) {
+        next({ name: '403' });
+      } else {
+        next();
+      }
+    },
+    component: () => {
+      if (!store.getters.isAdmin) {
+        
+      } else {
+        return import(/* webpackChunkName: "about" */ '../views/AdminView.vue')
+      }
+    }
   },
   {
     path: '/:catchAll(.*)',
@@ -51,7 +64,16 @@ const routes = [
     name: 'ArticleId',
     children: [],
     component: () => import(/* webpackChunkName: "about" */ '../views/ArticleIdView.vue')
-  }
+  },
+  {
+    path: '/403',
+    name: '403',
+    component: () => import(/* webpackChunkName: "about" */ '../views/NoPermission.vue')
+  },{
+    path: '/500',
+    name: '500',
+    component: () => import(/* webpackChunkName: "about" */ '../views/ServerError.vue')
+  },
 ]
 
 const router = createRouter({
