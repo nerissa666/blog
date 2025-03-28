@@ -14,7 +14,7 @@
       <h2>ABOUT SITE</h2>
       <article>
         <p>
-          前 端：<span>Vue + Element</span><br />
+          前 端：<span>Vue + Ant Design Vue</span><br />
 
           后 端：<span>Node + Nuxt + Express + Mongodb</span><br />
 

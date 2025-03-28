@@ -27,7 +27,7 @@
             >修改信息</a-button
           >
           <a style="display: inline-block; width: 5px"></a>
-          <a-button type="primary" size="small" danger @click.stop="logout"
+          <a-button size="small" danger @click.stop="logout"
             >退出登录</a-button
           >
         </template>
@@ -170,4 +170,5 @@ h3 {
   margin-right: 8px;
   margin-bottom: 8px;
 }
+
 </style>

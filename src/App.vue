@@ -87,5 +87,15 @@ main {
     flex: 1;
   }
 }
-
+.ant-btn-primary {
+  background-color: #bfe2e6;
+  // font-weight: 700;
+  // font-size: 16px;
+  // letter-spacing: 2px;
+  // font-family: Quicksand, "sans-serif";
+  color: #000;
+}
+.ant-switch.ant-switch-checked {
+    background: #bfe2e6;
+}
 </style>

@@ -14,7 +14,7 @@
           :emoji="emoji"
           @update:formState="($event) => (formState.words += $event)"
         />
-        <a-button type="primary" size="small" html-type="submit">发送</a-button>
+        <a-button type="primary" size="small" html-type="submit">Submit</a-button>
       </div>
     </a-form-item>
   </a-form>
@@ -166,5 +166,13 @@ defineExpose({
 }
 :deep(.ant-popover) {
   width: 100%;
+}
+.ant-btn-primary {
+  // background-color: #bfe2e6;
+  font-weight: 700;
+  // font-size: 16px;
+  letter-spacing: 1px;
+  font-family: Quicksand, "sans-serif";
+  // color: #333;
 }
 </style>
