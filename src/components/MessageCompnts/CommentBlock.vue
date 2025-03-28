@@ -44,6 +44,7 @@
             ]"
           >
             <InputPanel
+              ref="formRef"
               :model="rootComment"
               @rewriteSubmit="(val) => onSubmit({ ...rootComment, val }, background.pID)"
               :rewrite="true"
@@ -62,7 +63,7 @@
 </template>
 
 <script setup>
-import { reactive, defineProps, defineEmits, ref, computed, watch } from "vue";
+import { defineProps, defineEmits, ref, computed, watch } from "vue";
 import store from "@/store";
 import InputPanel from "./InputPanel.vue";
 
@@ -72,6 +73,7 @@ let user = ref(store.getters.user);
 watch(store.state.infoLogin, () => {
   user = computed(() => store.getters.user);
 });
+const formRef = ref(null)
 const openPanel = ref(false)
 const CancelToken = axios.CancelToken;
 const props = defineProps({
@@ -104,7 +106,6 @@ const handleLike = ({ _id: id, cID, pID, cIndex }, isParent = false) => {
         if (code === "ERR_CANCELED") return;
         emit("getComment");
       });
-
   !isParent &&
     axios
       .post(
@@ -140,6 +141,8 @@ const onSubmit = async ({ _id: id, author, val, ...res }, parentId) => {
     .then(({ code, message: msg, name }) => {
       if (code === "ERR_CANCELED") return;
       emit("getComment");
+      openPanel.value = false;
+      formRef.value.clearInput();
     });
 };
 </script>

@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { reactive, defineEmits,defineProps } from "vue";
+import { reactive, defineEmits,defineProps,defineExpose } from "vue";
 import EMojiPanel from "@/components/MessageCompnts/EMojiPanel.vue";
 import axios from "axios";
 const CancelToken = axios.CancelToken;
@@ -144,6 +144,12 @@ const onSubmit =  () => {
     emit('getComment')
   });
 };
+const clearInput = ()=>{
+  formState.words = ''
+}
+defineExpose({
+  clearInput,
+});
 </script>
 <style scoped lang="scss">
 .ant-form-item {
