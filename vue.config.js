@@ -1,4 +1,5 @@
 const { defineConfig } = require('@vue/cli-service')
+const webpack = require('webpack');
 
 module.exports = defineConfig({
   lintOnSave: false,
@@ -52,13 +53,13 @@ module.exports = defineConfig({
       // },
     }
   },
-  // configureWebpack: {
-  //   plugins: [
-  //     new webpack.DefinePlugin({
-  //       'process.env': {
-  //         API_BASE_URL: JSON.stringify(process.env.NODE_ENV === 'production' ? 'https://124.71.203.87' : 'http://localhost:3000')
-  //       }
-  //     })
-  //   ]
-  // }
+  configureWebpack: {
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env': {
+          API_BASE_URL: JSON.stringify(process.env.NODE_ENV === 'production' ? 'https://124.71.203.87' : 'http://localhost:3000')
+        }
+      })
+    ]
+  }
 })
