@@ -52,5 +52,13 @@ module.exports = defineConfig({
       // },
     }
   },
-
+  configureWebpack: {
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env': {
+          API_BASE_URL: JSON.stringify(process.env.NODE_ENV === 'production' ? 'https://124.71.203.87' : 'http://localhost:3000')
+        }
+      })
+    ]
+  }
 })
