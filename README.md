@@ -45,3 +45,5 @@ block upload file/cover fill form
 把message变成单例
 
 把大的text变成文件读取
+
+写一个添加删除 管理员 service
