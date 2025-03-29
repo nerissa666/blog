@@ -17,7 +17,7 @@
             <a-image
               width="100%"
               :height="(index++ / 2) % 2 == 1 ? '666px' : '100%'"
-              :src="item.cover"
+              :src="formatSrc(item.cover)"
             >
               <template #previewMask>
                 <div>
@@ -45,6 +45,7 @@
 import { useRouter } from "vue-router";
 import { reactive } from "vue";
 import axios from "axios";
+import { formatSrc } from '@/utils'
 const router = useRouter();
 const offHandlePreview = (articleId) => {
   router.push("/article/" + articleId);

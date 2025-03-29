@@ -3,7 +3,7 @@
     <a-table bordered :data-source="dataSource"  :columns="columns" size="small">
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'wechat'">
-          <a-image width="100%" :src="record.wechat" />
+          <a-image width="100%" :src="formatSrc(record.wechat)" />
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
           <a-switch
@@ -26,7 +26,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { message } from "ant-design-vue";
-import { formatDate } from "@/utils";
+import { formatDate, formatSrc } from "@/utils";
 const columns = [
   {
     title: "日期",

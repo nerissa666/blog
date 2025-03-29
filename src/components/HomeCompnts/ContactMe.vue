@@ -42,7 +42,7 @@
           :before-upload="beforeUpload"
           @change="handleChange"
         >
-          <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+          <img v-if="imageUrl" :src="formatSrc(imageUrl)" alt="avatar" />
           <div v-else>
             <loading-outlined v-if="loading"></loading-outlined>
             <plus-outlined v-else></plus-outlined>
@@ -61,6 +61,7 @@
 import { reactive, ref } from "vue";
 import { message } from "ant-design-vue";
 import axios from "axios";
+import { formatSrc } from '@/utils'
 const layout = {
   labelCol: { span: 5 },
   wrapperCol: { span: 14 },

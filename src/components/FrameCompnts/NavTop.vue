@@ -33,7 +33,7 @@
         </template>
         <template #title>{{ loginInfo?.user }}</template>
         <a-avatar
-          :src="loginInfo?.photo"
+          :src="formatSrc(loginInfo?.photo)"
           :size="{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }"
           style="cursor: pointer"
         />
@@ -52,6 +52,7 @@ import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
 import LoginModal from "./LoginModal.vue";
 import { useStore, mapState, mapGetters } from "vuex";
+import { formatSrc } from '@/utils'
 const store = useStore();
 const isAdmin = ref(store.getters.isAdmin);
 console.log(isAdmin.value, 'isAdmin');

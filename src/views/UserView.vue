@@ -78,7 +78,7 @@
           >
             <img
               v-if="imageUrl"
-              :src="imageUrl"
+              :src="formatSrc(imageUrl)"
               width="100
             %"
               height="100%"
@@ -106,6 +106,7 @@ import { Form, UploadChangeParam, UploadProps, message } from "ant-design-vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import axios from "axios";
+import { formatSrc } from '@/utils'
 const store = useStore();
 const router = useRouter();
 const useForm = Form.useForm;

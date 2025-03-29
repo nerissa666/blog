@@ -3,7 +3,7 @@
     <div class="personal_info">
       <div class="top_info">
         <div class="avatar">
-          <a-avatar src="/file/photo/avatar.jpg" />
+          <a-avatar :src="formatSrc('/file/photo/avatar.jpg')" />
           <div class="name">
             <span>小红帽</span>
             <p>WEB Developer</p>
@@ -23,7 +23,7 @@
             <a-popover placement="bottom" trigger="click">
               <template #content>
                 <img
-                  src="/file/photo/wechat.jpg"
+                  :src="formatSrc('/file/photo/wechat.jpg')"
                   alt=""
                   width="100px"
                   height="100px"
@@ -74,7 +74,7 @@
           <template #renderItem="{ item }">
             <a-list-item>
               <a-card :title="item.visitor.user">
-                <a-image width="100%" height="100%" :src="item.visitor.photo" />
+                <a-image width="100%" height="100%" :src="formatSrc(item.visitor.photo)" />
                 <!-- <img
                 :src="item.avatar"
                 :title="item.description"
@@ -90,12 +90,14 @@
   </div>
 </template>
 <script setup>
-import { reactive, ref, defineEmits, onMounted } from "vue";
+import { reactive, ref, defineEmits, onMounted, inject } from "vue";
 import { useRouter } from "vue-router";
 import { DownloadOutlined } from "@ant-design/icons-vue";
 import axios from "axios";
 const router = useRouter();
 let ifFixed = ref(false);
+const interceptorSrc = inject('$interceptorSrc')
+import { formatSrc } from '@/utils'
 const scrollFn = () => {
   let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
   ifFixed.value = scrollTop >= 235;

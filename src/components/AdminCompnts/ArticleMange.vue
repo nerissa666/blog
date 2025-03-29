@@ -103,7 +103,7 @@
           >
             <img
               v-if="imageUrl"
-              :src="imageUrl"
+              :src="formatSrc(imageUrl)"
               alt="avatar"
               width="100%"
               height="100%"
@@ -114,7 +114,7 @@
               <div class="ant-upload-text">Upload</div>
             </div>
           </a-upload>
-          <a-avatar v-else :src="record.cover" />
+          <a-avatar v-else :src="formatSrc(record.cover)" />
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
           <div class="editable-row-operations">
@@ -149,6 +149,7 @@ import { message } from "ant-design-vue";
 import request from "umi-request";
 import axios from "axios";
 import { useStore } from "vuex";
+import { formatSrc } from '@/utils'
 const store = useStore();
 const baseURL = store.state.baseURL;
 const columns = [

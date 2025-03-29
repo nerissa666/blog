@@ -38,7 +38,7 @@
             v-model:value="editableData[record._id][column.dataIndex]"
             style="margin: -5px 0"
           />
-          <a-avatar v-else :src="record.logo" />
+          <a-avatar v-else :src="formatSrc(record.logo)" />
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
           <div class="editable-row-operations">
@@ -74,7 +74,7 @@ import { cloneDeep } from "lodash-es";
 import { reactive, ref } from "vue";
 import { message } from "ant-design-vue";
 import axios from "axios";
-
+import { formatSrc } from '@/utils'
 const columns = [
   {
     title: "名称",

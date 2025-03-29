@@ -47,3 +47,5 @@ block upload file/cover fill form
 把大的text变成文件读取
 
 写一个添加删除 管理员 service
+
+怎么全局引入plugin 组件

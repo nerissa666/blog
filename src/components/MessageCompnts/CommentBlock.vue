@@ -6,7 +6,7 @@
       </template>
       <template #avatar>
         <a-avatar
-          :src="rootComment.author.photo"
+          :src="formatSrc(rootComment.author.photo)"
           :alt="rootComment.author.user"
         />
       </template>
@@ -67,7 +67,7 @@ import { defineProps, defineEmits, ref, computed, watch } from "vue";
 import store from "@/store";
 import InputPanel from "./InputPanel.vue";
 
-import { formatDate } from "@/utils";
+import { formatDate, formatSrc } from "@/utils";
 import axios from "axios";
 let user = ref(store.getters.user);
 watch(store.state.infoLogin, () => {

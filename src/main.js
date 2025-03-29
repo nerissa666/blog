@@ -9,6 +9,7 @@ import './assets/css/font.css'
 import "./assets/font/iconfont.css";
 import './assets/css/reset.css'
 import axios from './axios/index'
+import { interceptorSrc } from './plugin'
 //配置全局axios
 // axios.defaults.baseURL = baseURL //配置前缀url
 // axios.defaults.withCredentials = true //携带cookie
@@ -20,5 +21,6 @@ app.config.globalProperties.$axios = axios //添加到vue实例
 
 app.config.productionTip = false;
 app.config.globalProperties.$message = message;
+app.config.globalProperties.$interceptorSrc = interceptorSrc;
 app.use(store).use(router).use(Antd).mount('#app')
 

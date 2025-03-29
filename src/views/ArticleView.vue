@@ -10,7 +10,7 @@
           <span>{{ new Date(item.date).getFullYear() }}</span>
         </div>
         <div class="cover_description">
-          <img :src="item.cover" alt="" width="50%" height="100%" />
+          <img :src="formatSrc(item.cover)" alt="" width="50%" height="100%" />
           <div>
             <p>{{ item.des }}</p>
             <div>
@@ -32,6 +32,7 @@
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
+import { formatSrc } from '@/utils'
 const dataList = reactive([
   // {
   //   title: "01.React基础知识点",
