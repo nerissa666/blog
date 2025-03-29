@@ -22,7 +22,7 @@ module.exports = defineConfig({
     proxy: {
       '/file': {
         target:  'https://124.71.203.87',
-        // target:  'http://localhost:4001',
+        // target: 'http://localhost:4001',
         ws: true,
         changeOrigin: true,
         // pathRewrite: {
