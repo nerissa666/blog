@@ -3,8 +3,9 @@ import { message } from "ant-design-vue";
 import store from '@/store'
 const CancelToken = axios.CancelToken;
 const source = CancelToken.source();
+// const baseURL = process.env.NODE_ENV === 'production' ? '' : 'https://localhost:4001';
 
-const baseURL = process.env.VUE_APP_API_BASE_URL;
+const baseURL = process.env.VUE_APP_API_BASE_URL
 
 // 请求拦截
 axios.interceptors.request.use((config) => {
@@ -22,7 +23,7 @@ axios.interceptors.request.use((config) => {
     // }
     //配置全局axios
     config.baseURL = baseURL //配置前缀url
-    config.withCredentials = true //携带cookie    
+    config.withCredentials = true //携带cookie
     return config;
 }, (error) => {
     if (axios.isCancel(error)) {
