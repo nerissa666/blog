@@ -91,7 +91,7 @@ let [tempOptions, tempFileObj] = [[], {}];
 // };
 const handleCustomRequest = (options) => {
   if (options.action.endsWith("md")) {
-    formArticle.title = options.file.name;
+    formArticle.title = options.file.name.replace(/\.md$/, '');
   }
   tempOptions.push(options);
 };
