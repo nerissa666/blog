@@ -3,9 +3,8 @@ import { message } from "ant-design-vue";
 import store from '@/store'
 const CancelToken = axios.CancelToken;
 const source = CancelToken.source();
-// const baseURL = process.env.NODE_ENV === 'production' ? '' : 'https://localhost:4001';
 
-const baseURL = process.env.NODE_ENV === 'production' ? 'https://124.71.203.87' : 'http://localhost:4001';
+const baseURL = process.env.VUE_APP_API_BASE_URL;
 
 // 请求拦截
 axios.interceptors.request.use((config) => {

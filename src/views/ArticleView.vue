@@ -10,8 +10,9 @@
           <span>{{ new Date(item.date).getFullYear() }}</span>
         </div>
         <div class="cover_description">
+          <a-image width="50%" height="100%" :src="$formatSRC(item.cover)" />
 
-          <img :src="$formatSRC(item.cover)" alt="" width="50%" height="100%" style="cursor: pointer;" @click="() => offHandlePreview(item._id)"/>
+          <!-- <img :src="$formatSRC(item.cover)" alt="" width="50%" height="100%" style="cursor: pointer;" @click="() => offHandlePreview(item._id)"/> -->
 
           <div>
             <p>{{ item.des }}</p>
