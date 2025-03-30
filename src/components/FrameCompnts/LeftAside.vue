@@ -3,7 +3,7 @@
     <div class="personal_info">
       <div class="top_info">
         <div class="avatar">
-          <a-avatar :src="formatSrc('/file/photo/avatar.jpg')" />
+          <a-avatar :src="$formatSRC('/file/photo/avatar.jpg')" />
           <div class="name">
             <span>小红帽</span>
             <p>WEB Developer</p>
@@ -74,7 +74,7 @@
           <template #renderItem="{ item }">
             <a-list-item>
               <a-card :title="item.visitor.user">
-                <a-image width="100%" height="100%" :src="formatSrc(item.visitor.photo)" />
+                <a-image width="100%" height="100%" :src="$formatSRC(item.visitor?.photo)" />
                 <!-- <img
                 :src="item.avatar"
                 :title="item.description"

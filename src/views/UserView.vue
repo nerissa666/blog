@@ -78,11 +78,9 @@
           >
             <img
               v-if="imageUrl"
-<<<<<<< HEAD
-              :src="formatSrc(imageUrl)"
-=======
+
               :src="$formatSRC(imageUrl)"
->>>>>>> 509820a0a2dcb0a47b8fe17f5da39a5ad40a6db2
+
               width="100
             %"
               height="100%"

@@ -22,10 +22,8 @@ app.config.globalProperties.$axios = axios //添加到vue实例
 
 app.config.productionTip = false;
 app.config.globalProperties.$message = message;
-<<<<<<< HEAD
-app.config.globalProperties.$interceptorSrc = interceptorSrc;
-=======
+
 app.config.globalProperties.$formatSRC = formatSRC;
->>>>>>> 509820a0a2dcb0a47b8fe17f5da39a5ad40a6db2
+
 app.use(store).use(router).use(Antd).mount('#app')
 

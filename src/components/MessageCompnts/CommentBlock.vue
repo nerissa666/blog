@@ -6,13 +6,10 @@
       </template>
       <template #avatar>
         <a-avatar
-<<<<<<< HEAD
-          :src="formatSrc(rootComment.author.photo)"
-          :alt="rootComment.author.user"
-=======
+
           :src="$formatSRC(rootComment.author.photo)"
           :alt="$formatSRC(rootComment.author.user)"
->>>>>>> 509820a0a2dcb0a47b8fe17f5da39a5ad40a6db2
+
         />
       </template>
       <template #content>

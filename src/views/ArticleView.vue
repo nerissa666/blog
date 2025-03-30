@@ -10,11 +10,9 @@
           <span>{{ new Date(item.date).getFullYear() }}</span>
         </div>
         <div class="cover_description">
-<<<<<<< HEAD
-          <img :src="formatSrc(item.cover)" alt="" width="50%" height="100%" />
-=======
+
           <img :src="$formatSRC(item.cover)" alt="" width="50%" height="100%" style="cursor: pointer;" @click="() => offHandlePreview(item._id)"/>
->>>>>>> 509820a0a2dcb0a47b8fe17f5da39a5ad40a6db2
+
           <div>
             <p>{{ item.des }}</p>
             <div>
