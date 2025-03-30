@@ -78,7 +78,7 @@
           >
             <img
               v-if="imageUrl"
-              :src="imageUrl"
+              :src="$formatSRC(imageUrl)"
               width="100
             %"
               height="100%"

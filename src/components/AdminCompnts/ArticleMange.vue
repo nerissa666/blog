@@ -103,7 +103,7 @@
           >
             <img
               v-if="imageUrl"
-              :src="imageUrl"
+              :src="$formatSRC(imageUrl)"
               alt="avatar"
               width="100%"
               height="100%"
@@ -114,7 +114,7 @@
               <div class="ant-upload-text">Upload</div>
             </div>
           </a-upload>
-          <a-avatar v-else :src="record.cover" />
+          <a-avatar v-else :src="$formatSRC(record.cover)" />
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
           <div class="editable-row-operations">

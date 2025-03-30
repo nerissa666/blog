@@ -3,7 +3,7 @@
     <a-table bordered :data-source="dataSource"  :columns="columns" size="small">
       <template #bodyCell="{ column, text, record }">
         <template v-if="column.dataIndex === 'wechat'">
-          <a-image width="100%" :src="record.wechat" />
+          <a-image width="100%" :src="$formatSRC(record.wechat)" />
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
           <a-switch

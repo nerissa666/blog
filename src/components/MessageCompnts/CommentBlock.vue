@@ -6,8 +6,8 @@
       </template>
       <template #avatar>
         <a-avatar
-          :src="rootComment.author.photo"
-          :alt="rootComment.author.user"
+          :src="$formatSRC(rootComment.author.photo)"
+          :alt="$formatSRC(rootComment.author.user)"
         />
       </template>
       <template #content>

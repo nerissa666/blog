@@ -33,7 +33,7 @@
         </template>
         <template #title>{{ loginInfo?.user }}</template>
         <a-avatar
-          :src="loginInfo?.photo"
+          :src="$formatSRC(loginInfo?.photo)"
           :size="{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }"
           style="cursor: pointer"
         />

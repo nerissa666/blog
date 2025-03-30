@@ -13,6 +13,7 @@ import axios from './axios/index'
 // axios.defaults.baseURL = baseURL //配置前缀url
 // axios.defaults.withCredentials = true //携带cookie
 import { message } from 'ant-design-vue';
+import { formatSRC } from './utils/index'
 const app = createApp(App)
 
 console.log = process.env.NODE_ENV === 'production' ? function() {} : console.log
@@ -20,5 +21,6 @@ app.config.globalProperties.$axios = axios //添加到vue实例
 
 app.config.productionTip = false;
 app.config.globalProperties.$message = message;
+app.config.globalProperties.$formatSRC = formatSRC;
 app.use(store).use(router).use(Antd).mount('#app')
 
