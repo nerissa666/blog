@@ -12,12 +12,12 @@ import axios from './axios/index'
 import { interceptorSrc } from './plugin'
 //配置全局axios
 // axios.defaults.baseURL = baseURL //配置前缀url
-// axios.defaults.withCredentials = true //携带cookie
+axios.defaults.withCredentials = true //携带cookie
 import { message } from 'ant-design-vue';
 import { formatSRC } from './utils/index'
 const app = createApp(App)
 
-// console.log = process.env.NODE_ENV === 'production' ? function() {} : console.log
+console.log = process.env.NODE_ENV === 'production' ? function() {} : console.log
 app.config.globalProperties.$axios = axios //添加到vue实例
 
 app.config.productionTip = false;

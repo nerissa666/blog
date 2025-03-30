@@ -23,7 +23,7 @@ axios.interceptors.request.use((config) => {
     // }
     //配置全局axios
     config.baseURL = baseURL //配置前缀url
-    config.withCredentials = true //携带cookie
+    config.withCredentials = true //携带cookie    
     return config;
 }, (error) => {
     if (axios.isCancel(error)) {
