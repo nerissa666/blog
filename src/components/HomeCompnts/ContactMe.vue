@@ -59,7 +59,8 @@
 
 <script setup>
 import { reactive, ref } from "vue";
-import { message, Upload, LoadingOutlined, PlusOutlined } from "ant-design-vue";
+import { message } from "ant-design-vue";
+import { LoadingOutlined,PlusOutlined } from "@ant-design/icons-vue";
 import axios from "axios";
 const layout = {
   labelCol: { span: 5 },

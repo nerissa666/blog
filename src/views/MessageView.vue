@@ -29,7 +29,7 @@
   </div>
 </template>
 <script setup>
-import { reactive, ref, useRef } from "vue";
+import {ref } from "vue";
 import CommenTree from "@/components/MessageCompnts/CommenTree.vue";
 import InputPanel from "@/components/MessageCompnts/InputPanel.vue";
 

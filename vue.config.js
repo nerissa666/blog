@@ -22,8 +22,8 @@ module.exports = defineConfig({
     open: true, //自动打开浏览器
     proxy: {
       '/file': {
-        target:  'https://124.71.203.87',
-        // target: 'http://localhost:4001',
+        // target:  'https://124.71.203.87',
+        target: 'http://localhost:4001',
         ws: true,
         changeOrigin: true,
         // pathRewrite: {

@@ -102,7 +102,8 @@
 
 <script setup>
 import { reactive, ref, toRaw } from "vue";
-import { Form, UploadChangeParam, UploadProps, message, Upload, LoadingOutlined, PlusOutlined } from "ant-design-vue";
+import { Form, message } from "ant-design-vue";
+import { LoadingOutlined,PlusOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import axios from "axios";
