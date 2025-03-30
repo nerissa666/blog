@@ -16,7 +16,7 @@ import { message } from 'ant-design-vue';
 import { formatSRC } from './utils/index'
 const app = createApp(App)
 
-console.log = process.env.NODE_ENV === 'production' ? function() {} : console.log
+// console.log = process.env.NODE_ENV === 'production' ? function() {} : console.log
 app.config.globalProperties.$axios = axios //添加到vue实例
 
 app.config.productionTip = false;
