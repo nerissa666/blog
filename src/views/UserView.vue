@@ -78,7 +78,11 @@
           >
             <img
               v-if="imageUrl"
+<<<<<<< HEAD
               :src="formatSrc(imageUrl)"
+=======
+              :src="$formatSRC(imageUrl)"
+>>>>>>> 509820a0a2dcb0a47b8fe17f5da39a5ad40a6db2
               width="100
             %"
               height="100%"
@@ -102,7 +106,8 @@
 
 <script setup>
 import { reactive, ref, toRaw } from "vue";
-import { Form, UploadChangeParam, UploadProps, message } from "ant-design-vue";
+import { Form, message } from "ant-design-vue";
+import { LoadingOutlined,PlusOutlined } from "@ant-design/icons-vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import axios from "axios";

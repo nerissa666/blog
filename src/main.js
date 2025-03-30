@@ -14,13 +14,18 @@ import { interceptorSrc } from './plugin'
 // axios.defaults.baseURL = baseURL //配置前缀url
 // axios.defaults.withCredentials = true //携带cookie
 import { message } from 'ant-design-vue';
+import { formatSRC } from './utils/index'
 const app = createApp(App)
 
-console.log = process.env.NODE_ENV === 'production' ? function() {} : console.log
+// console.log = process.env.NODE_ENV === 'production' ? function() {} : console.log
 app.config.globalProperties.$axios = axios //添加到vue实例
 
 app.config.productionTip = false;
 app.config.globalProperties.$message = message;
+<<<<<<< HEAD
 app.config.globalProperties.$interceptorSrc = interceptorSrc;
+=======
+app.config.globalProperties.$formatSRC = formatSRC;
+>>>>>>> 509820a0a2dcb0a47b8fe17f5da39a5ad40a6db2
 app.use(store).use(router).use(Antd).mount('#app')
 

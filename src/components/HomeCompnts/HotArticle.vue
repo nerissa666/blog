@@ -17,7 +17,11 @@
             <a-image
               width="100%"
               :height="(index++ / 2) % 2 == 1 ? '666px' : '100%'"
+<<<<<<< HEAD
               :src="formatSrc(item.cover)"
+=======
+              :src="$formatSRC(item.cover)"
+>>>>>>> 509820a0a2dcb0a47b8fe17f5da39a5ad40a6db2
             >
               <template #previewMask>
                 <div>

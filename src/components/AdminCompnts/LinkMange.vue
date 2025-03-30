@@ -38,7 +38,11 @@
             v-model:value="editableData[record._id][column.dataIndex]"
             style="margin: -5px 0"
           />
+<<<<<<< HEAD
           <a-avatar v-else :src="formatSrc(record.logo)" />
+=======
+          <a-avatar v-else :src="$formatSRC(record.logo)" />
+>>>>>>> 509820a0a2dcb0a47b8fe17f5da39a5ad40a6db2
         </template>
         <template v-else-if="column.dataIndex === 'operation'">
           <div class="editable-row-operations">

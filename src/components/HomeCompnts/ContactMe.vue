@@ -32,7 +32,7 @@
       <a-form-item :name="['user', 'message']" label="Message">
         <a-textarea v-model:value="formState.user.message" />
       </a-form-item>
-      <a-form-item :name="['user', 'WeChat']" label="WeChat">
+      <!-- <a-form-item :name="['user', 'WeChat']" label="WeChat">
         <a-upload
           v-model:file-list="fileList"
           name="avatar"
@@ -49,7 +49,7 @@
             <div class="ant-upload-text">Upload</div>
           </div>
         </a-upload>
-      </a-form-item>
+      </a-form-item> -->
       <a-form-item :wrapper-col="{ ...layout.wrapperCol, offset: 10 }">
         <a-button type="primary" html-type="submit">Submit</a-button>
       </a-form-item>
@@ -60,6 +60,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { message } from "ant-design-vue";
+import { LoadingOutlined,PlusOutlined } from "@ant-design/icons-vue";
 import axios from "axios";
 import { formatSrc } from '@/utils'
 const layout = {
