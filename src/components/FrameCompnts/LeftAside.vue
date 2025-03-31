@@ -74,8 +74,8 @@
           <template #renderItem="{ item }">
             <a-list-item>
               <a-card :title="item.visitor.user">
-                <!-- <a-image width="100%" height="100%" :src="$formatSRC(item.visitor?.photo)" /> -->
-                <a-image width="100%" height="100%" :src="item.visitor?.photo" />
+                <a-image width="100%" height="100%" :src="$formatSRC(item.visitor?.photo)" />
+                <!-- <a-image width="100%" height="100%" :src="item.visitor?.photo" /> -->
                 <!-- <img
                 :src="item.avatar"
                 :title="item.description"
