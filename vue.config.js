@@ -57,16 +57,16 @@ module.exports = defineConfig({
       //   // },
       // }
     },
-    configureWebpack: {
-      devServer: {
-        proxy: {
-          '/file': {
-            target: process.env.VUE_APP_API_BASE_URL,
-            changeOrigin: true,
-            // pathRewrite: { '^/api': '' }
-          }
-        }
-      }
-    }
+    // configureWebpack: {
+    //   devServer: {
+    //     proxy: {
+    //       '/file': {
+    //         target: process.env.VUE_APP_API_BASE_URL,
+    //         changeOrigin: true,
+    //         // pathRewrite: { '^/api': '' }
+    //       }
+    //     }
+    //   }
+    // }
   }
 })
