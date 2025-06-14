@@ -35,7 +35,7 @@
         </ul>
       </div>
       <div class="bottom_btn">
-        <a href="https://github.com/nerissa666" target="_blank">
+        <a href="https://github.com/nerissa666/blog.git" target="_blank">
           <a-button type="primary" shape="round" size="large">
             <template #icon>
               <DownloadOutlined />
