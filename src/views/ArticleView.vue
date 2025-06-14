@@ -1,7 +1,11 @@
 <template>
   <div class="">
     <ul>
-      <li v-for="item in dataList" :key="item._id">
+      <li
+        v-for="item in dataList"
+        :key="item._id"
+        @click="() => offHandlePreview(item._id)"
+      >
         <h2>{{ item.title }}</h2>
         <div class="date">
           <p class="day">{{ new Date(item.date).getDate() }}</p>
@@ -9,22 +13,10 @@
           >&nbsp;&nbsp;&nbsp;
           <span>{{ new Date(item.date).getFullYear() }}</span>
         </div>
-        <div class="cover_description">
-          <a-image width="50%" height="100%" :src="$formatSRC(item.cover)" />
-
-          <!-- <img :src="$formatSRC(item.cover)" alt="" width="50%" height="100%" style="cursor: pointer;" @click="() => offHandlePreview(item._id)"/> -->
-
-          <div>
-            <p>{{ item.des }}</p>
-            <div>
-              <p>
-                浏览量：<span>{{ item.pv }}</span>
-              </p>
-              <a-button type="primary" @click="() => offHandlePreview(item._id)"
-                >阅读全文</a-button
-              >
-            </div>
-          </div>
+        <div>
+          <p class="scan">
+            浏览量：<span>{{ item.pv }}</span>
+          </p>
         </div>
       </li>
     </ul>
@@ -35,7 +27,7 @@
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import { formatSrc } from '@/utils'
+import { formatSrc } from "@/utils";
 const dataList = reactive([
   // {
   //   title: "01.React基础知识点",
@@ -65,68 +57,72 @@ const dataList = reactive([
   //   view: 1,
   // },
 ]);
-axios
-  .get("/get/article")
-  .then(({ data }) => {
-    data.forEach((item) => 
-      dataList.push(item));
-  })
+axios.get("/get/article").then(({ data }) => {
+  data.forEach((item) => dataList.unshift(item));
+});
 const router = useRouter();
 const offHandlePreview = (articleId) => {
   router.push("/article/" + articleId);
-  
 };
 </script>
 <style scoped lang="scss">
-li {
-  font-family: Quicksand, Microsoft YaHei, sans-serif;
+div {
   background-color: #fff;
-  padding: 2%;
-  margin-bottom: 2%;
-  position: relative;
-  h2 {
-    margin-bottom: 15px;
-    font-size: 20px;
-    letter-spacing: 3px;
-    line-height: 24px;
-    border-left: 5px solid #73b899;
-    text-indent: 10px;
-    text-align: left;
-    font-weight: bold;
-    color: #000;
-  }
-  .date {
-    position: absolute;
-    top: 0;
-    right: 10px;
-    width: 60px;
-    .day {
-      font-weight: bolder;
-      font-size: 40px;
-      text-align: center;
-      color: #6bc30d;
-    }
-  }
-  .cover_description {
-    padding-top: 2%;
-    display: flex;
-
-    > div {
-      padding: 0 2% 2%;
-      flex: 1;
+  li {
+    font-family: Quicksand, Microsoft YaHei, sans-serif;
+    // background-color: #fff;
+    padding: 2%;
+    position: relative;
+    border-bottom: 1px dotted #bfe2e6;
+    h2 {
+      margin-bottom: 15px;
+      font-size: 20px;
+      letter-spacing: 3px;
+      line-height: 24px;
+      border-left: 5px solid #73b899;
+      text-indent: 10px;
       text-align: left;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      > div {
-        text-align: right;
-        p {
-          margin-bottom: 1%;
-          color: #aaa;
-          font-size: 12px;
-        }
+      font-weight: bold;
+      color: #000;
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+        color: blue;
       }
     }
+    .date {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      width: 60px;
+      .day {
+        font-weight: bolder;
+        font-size: 40px;
+        text-align: center;
+        color: #6bc30d;
+      }
+    }
+    p.scan {
+      margin-bottom: 1%;
+      color: #aaa;
+      font-size: 12px;
+    }
+    // .cover_description {
+    //   padding-top: 2%;
+    //   display: flex;
+
+    //   > div {
+    //     padding: 0 2% 2%;
+    //     flex: 1;
+    //     text-align: left;
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: space-between;
+    //     > div {
+    //       text-align: right;
+    //     }
+    //   }
+    // }
   }
 }
 </style>
