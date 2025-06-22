@@ -5,7 +5,17 @@
       热门文章推荐。 <a href="">更多文章</a> 请访问文章页（￣︶￣）↗
     </article>
     <div>
-      <a-row :gutter="[0, 0]">
+      <ul>
+        <li
+          v-for="item in hotArticleList"
+          :key="item._id"
+          @click="() => offHandlePreview(item._id)"
+        >
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.des }}</p>
+        </li>
+      </ul>
+      <!-- <a-row :gutter="[0, 0]">
         <a-col
           class="gutter-row"
           :span="12"
@@ -38,7 +48,7 @@
             <p class="title">{{ item.title }}</p>
           </div>
         </a-col>
-      </a-row>
+      </a-row> -->
     </div>
   </div>
 </template>
@@ -47,11 +57,10 @@
 import { useRouter } from "vue-router";
 import { reactive } from "vue";
 import axios from "axios";
-import { formatSrc } from '@/utils'
+import { formatSrc } from "@/utils";
 const router = useRouter();
 const offHandlePreview = (articleId) => {
   router.push("/article/" + articleId);
-  
 };
 const hotArticleList = reactive([
   // {
@@ -73,11 +82,9 @@ const hotArticleList = reactive([
   //   url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
   // },
 ]);
-axios
-  .get("/get/article")
-  .then(({ data }) => {
-    data.forEach((item, index) => index < 3 && hotArticleList.push(item));
-  })
+axios.get("/get/article").then(({ data }) => {
+  data.forEach((item, index) => index < 3 && hotArticleList.push(item));
+});
 </script>
 
 <style scoped lang="scss">
@@ -125,5 +132,26 @@ p.title {
   flex: 0 0 50%;
   max-width: 50%;
   width: 50%;
+}
+li {
+  padding: 10px;
+  color: #444;
+  font-size: 1rem;
+  line-height: 30px;
+  text-align: left;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+h3 {
+  font-weight: 700;
+  margin-bottom: 1%;
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;
+    & + p {
+      text-decoration: underline;
+    }
+  }
 }
 </style>
