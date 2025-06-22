@@ -9,7 +9,7 @@
       <nav-top />
     </nav>
     <main>
-      <left-aside   />
+      <left-aside />
       <div class="right-aside">
         <router-view />
       </div>
@@ -27,10 +27,53 @@ import LeftAside from "@/components/FrameCompnts/LeftAside.vue";
 import { onMounted, ref } from "vue";
 import { useStore } from "vuex";
 const store = useStore();
-store.commit("setInfoLogin", JSON.parse(localStorage.getItem("loginInfo")) || {});
+store.commit(
+  "setInfoLogin",
+  JSON.parse(localStorage.getItem("loginInfo")) || {}
+);
+document.addEventListener("click", (e) => {
+  for (let i = 0; i < 12; i++) {
+    const particle = document.createElement("div");
+    particle.className = "particle";
+    const x = e.clientX;
+    const y = e.clientY;
+    const angle = Math.random() * 2 * Math.PI;
+    const radius = 50 + Math.random() * 10;
+    const offsetX = Math.cos(angle) * radius;
+    const offsetY = Math.sin(angle) * radius;
 
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+    particle.style.setProperty("--x", `${offsetX}px`);
+    particle.style.setProperty("--y", `${offsetY}px`);
+    particle.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+
+    document.body.appendChild(particle);
+
+    setTimeout(() => particle.remove(), 600);
+  }
+});
 </script>
 <style lang="scss">
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  pointer-events: none;
+  background: red;
+  border-radius: 50%;
+  animation: explode 0.6s ease-out forwards;
+}
+@keyframes explode {
+  0% {
+    transform: scale(1) translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0) translate(var(--x), var(--y));
+    opacity: 0;
+  }
+}
 ::-webkit-scrollbar {
   /*滚动条整体样式*/
   width: 5px; /*高宽分别对应横竖滚动条的尺寸*/
@@ -96,6 +139,6 @@ main {
   color: #000;
 }
 .ant-switch.ant-switch-checked {
-    background: #bfe2e6;
+  background: #bfe2e6;
 }
 </style>
