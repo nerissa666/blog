@@ -83,7 +83,9 @@ const hotArticleList = reactive([
   // },
 ]);
 axios.get("/get/article").then(({ data }) => {
-  data.forEach((item, index) => index < 3 && hotArticleList.push(item));
+  data
+    .reverse()
+    .forEach((item, index) => index < 3 && hotArticleList.push(item));
 });
 </script>
 
@@ -153,5 +155,8 @@ h3 {
       text-decoration: underline;
     }
   }
+}
+li:not(:last-child) {
+  margin-bottom: 1rem;
 }
 </style>

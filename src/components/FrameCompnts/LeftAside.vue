@@ -74,7 +74,11 @@
           <template #renderItem="{ item }">
             <a-list-item>
               <a-card :title="item.visitor.user">
-                <a-image width="100%" height="100%" :src="$formatSRC(item.visitor?.photo)" />
+                <a-image
+                  width="100%"
+                  height="100%"
+                  :src="$formatSRC(item.visitor?.photo)"
+                />
                 <!-- <a-image width="100%" height="100%" :src="item.visitor?.photo" /> -->
                 <!-- <img
                 :src="item.avatar"
@@ -97,8 +101,8 @@ import { DownloadOutlined } from "@ant-design/icons-vue";
 import axios from "axios";
 const router = useRouter();
 let ifFixed = ref(false);
-const interceptorSrc = inject('$interceptorSrc')
-import { formatSrc } from '@/utils'
+const interceptorSrc = inject("$interceptorSrc");
+import { formatSrc } from "@/utils";
 const scrollFn = () => {
   let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
   ifFixed.value = scrollTop >= 235;
@@ -219,14 +223,15 @@ const visitorList = reactive([
   //   description: "This is description",
   // },
 ]);
-axios.get("/get/article").then(({data}) => {
-  data.forEach((item, index) => index < 3 && hotArticleList.push(item));
+axios.get("/get/article").then(({ data }) => {
+  data
+    .reverse()
+    .forEach((item, index) => index < 3 && hotArticleList.push(item));
 });
 
-axios.get("/get/visitor").then(({data}) => {
+axios.get("/get/visitor").then(({ data }) => {
   data.forEach((item, index) => index < 12 && visitorList.push(item));
 });
-
 </script>
 <style scoped lang="scss">
 div.fixed {
@@ -246,12 +251,14 @@ div.fixed {
 .left_side {
   text-align: center;
 
-  > div, .fakewrapper>div {
+  > div,
+  .fakewrapper > div {
     box-shadow: 0 0 4px #ddd;
     margin-bottom: 5%;
     background-color: #fff;
   }
-  > div:not(:first-child) ,div.fakewrapper>div{
+  > div:not(:first-child),
+  div.fakewrapper > div {
     padding: 6%;
     text-align: left;
     h4 {
@@ -424,6 +431,5 @@ div.fakewrapper {
     border: none;
     padding: 6%;
   }
-
 }
 </style>
