@@ -46,6 +46,31 @@
       </div>
     </div>
     <div :class="['fakewrapper', { fixed: ifFixed }]">
+      <div class="portfolio">
+        <h4>Portfolio</h4>
+        <a-list item-layout="horizontal" :data-source="portfolioList">
+          <template
+            #renderItem="{ item: { link, title, description, github } }"
+          >
+            <a-list-item>
+              <a-list-item-meta :description="description">
+                <template #title>
+                  <a :href="link" class="a-title">{{ title }}</a>
+                </template>
+                <template #avatar>
+                  <a
+                    :href="github"
+                    title="点击跳转Github"
+                    class="iconfont"
+                    v-html="'&#xe632;'"
+                    target="_blank"
+                  />
+                </template>
+              </a-list-item-meta>
+            </a-list-item>
+          </template>
+        </a-list>
+      </div>
       <div class="hot_article">
         <!-- <div :class="['hot_article', 'fixed']"> -->
         <h4>Hot Articles</h4>
@@ -54,7 +79,9 @@
             <a-list-item>
               <a-list-item-meta :description="item.description">
                 <template #title>
-                  <a :href="'/article/' + item._id">{{ item.title }}</a>
+                  <a :href="'/article/' + item._id" class="a-title">{{
+                    item.title
+                  }}</a>
                 </template>
                 <template #avatar>
                   <span class="order">{{ index + 1 }}</span>
@@ -160,7 +187,20 @@ const hotArticleList = reactive([
   //   title: "03.React组件基础",
   // },
 ]);
-
+const portfolioList = reactive([
+  {
+    title: "FindHouse",
+    link: "https://124.71.203.87/findhouse",
+    description: "一个基于React19的租房网站",
+    github: "https://github.com/nerissa666/findhouse.git",
+  },
+  {
+    title: "Tang Poems",
+    link: "#",
+    description: "一个基于deepseek大语言模型的诗词ai",
+    github: "",
+  },
+]);
 const visitorList = reactive([
   // {
   //   name: "Title 16689879",
@@ -431,5 +471,10 @@ div.fakewrapper {
     border: none;
     padding: 6%;
   }
+}
+
+.portfolio .a-title:hover {
+  color: #4096ff;
+  text-decoration: underline;
 }
 </style>
